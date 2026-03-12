@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Shekhar Dutt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy: #1A3C6E;
+      --navy-light: #244d8a;
+      --gold: #C9A84C;
+      --gold-light: #d4b766;
+      --white: #FFFFFF;
+      --black: #0A0A0A;
+      --grey-bg: #F3F4F6;
+      --grey-border: #E5E7EB;
+      --grey-text: #6B7280;
+      --red: #EF4444;
+      --green: #10B981;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: 0.25s ease;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--grey-bg); color: var(--black); min-height: 100vh; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+    /* LOGIN */
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--navy) 0%, #0f2d55 100%);
+    }
+    .login-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .login-card h1 {
+      font-size: 1.6rem;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .login-card p { color: var(--grey-text); font-size: 0.9rem; margin-bottom: 32px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--grey-border);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      transition: var(--transition);
+      background: var(--white);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(26,60,110,0.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-login:hover { background: var(--navy-light); }
+    .login-error { color: var(--red); font-size: 0.85rem; margin-top: 12px; display: none; }
+
+    /* DASHBOARD LAYOUT */
+    .dashboard { display: none; }
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 260px;
+      background: var(--white);
+      border-right: 1px solid var(--grey-border);
+      padding: 24px 0;
+      overflow-y: auto;
+      z-index: 100;
+      transition: var(--transition);
+    }
+    .sidebar-logo {
+      padding: 0 24px 24px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      border-bottom: 1px solid var(--grey-border);
+      margin-bottom: 16px;
+    }
+    .sidebar-logo span { color: var(--gold); font-size: 0.7rem; display: block; font-family: 'Inter',sans-serif; font-weight: 500; color: var(--grey-text); margin-top: 4px; }
+    .sidebar-nav { list-style: none; padding: 0 12px; }
+    .sidebar-nav li { margin-bottom: 2px; }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--grey-text);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background: rgba(26,60,110,0.06);
+      color: var(--navy);
+    }
+    .sidebar-nav a.active { font-weight: 600; }
+    .sidebar-nav .nav-icon { width: 20px; text-align: center; font-size: 1rem; }
+    .sidebar-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 16px 24px;
+      border-top: 1px solid var(--grey-border);
+    }
+    .btn-logout {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      border: 1.5px solid var(--red);
+      color: var(--red);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-logout:hover { background: var(--red); color: var(--white); }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 32px 40px;
+      min-height: 100vh;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .page-header h2 { font-size: 1.5rem; color: var(--navy); }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(16,185,129,0.1);
+      color: var(--green);
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--grey-border);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--grey-border);
+    }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; transition: var(--transition); }
+    .btn-primary { background: var(--navy); color: var(--white); }
+    .btn-primary:hover { background: var(--navy-light); }
+    .btn-gold { background: var(--gold); color: var(--white); }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--grey-border); color: var(--black); }
+    .btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+    .btn-danger { background: var(--red); color: var(--white); }
+    .btn-danger:hover { opacity: 0.9; }
+    .btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+
+    /* TABLE */
+    .item-table { width: 100%; border-collapse: collapse; }
+    .item-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--grey-text);
+      border-bottom: 2px solid var(--grey-border);
+    }
+    .item-table td {
+      padding: 12px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--grey-border);
+      vertical-align: middle;
+    }
+    .item-table tr:hover td { background: rgba(26,60,110,0.02); }
+    .actions { display: flex; gap: 8px; }
+
+    /* PANEL PAGES */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--navy);
+      color: var(--white);
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: 0.4s ease;
+      z-index: 9999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal h3 {
+      font-size: 1.2rem;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+    /* HAMBURGER FOR MOBILE */
+    .mobile-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; background: var(--white); border: 1px solid var(--grey-border); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-md); }
+      .main-content { margin-left: 0; padding: 72px 16px 32px; }
+      .mobile-toggle { display: block; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Stats cards */
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--grey-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .num { font-size: 1.6rem; font-weight: 700; color: var(--navy); }
+    .stat-card .lbl { font-size: 0.78rem; color: var(--grey-text); margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-wrap" id="loginScreen">
+    <div class="login-card">
+      <h1>Admin Dashboard</h1>
+      <p>Sign in to manage your portfolio website content.</p>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="Enter username" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn-login" onclick="doLogin()">Sign In</button>
+      <p class="login-error" id="loginError">Invalid username or password.</p>
+      <p style="font-size:0.78rem;color:var(--grey-text);margin-top:20px;text-align:center;">Default: <strong>admin</strong> / <strong>shekhar2026</strong><br>Change password after first login.</p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard" id="dashboard">
+    <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776; Menu</button>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        Shekhar Dutt
+        <span>Admin Dashboard</span>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a data-panel="overview" class="active" onclick="showPanel('overview')"><span class="nav-icon">&#9632;</span> Overview</a></li>
+        <li><a data-panel="hero" onclick="showPanel('hero')"><span class="nav-icon">&#9733;</span> Hero Section</a></li>
+        <li><a data-panel="about" onclick="showPanel('about')"><span class="nav-icon">&#9786;</span> About</a></li>
+        <li><a data-panel="achievements" onclick="showPanel('achievements')"><span class="nav-icon">&#9813;</span> Achievements</a></li>
+        <li><a data-panel="books" onclick="showPanel('books')"><span class="nav-icon">&#9997;</span> Books</a></li>
+        <li><a data-panel="ebooks" onclick="showPanel('ebooks')"><span class="nav-icon">&#128218;</span> eBooks</a></li>
+        <li><a data-panel="media" onclick="showPanel('media')"><span class="nav-icon">&#128240;</span> Media</a></li>
+        <li><a data-panel="pages" onclick="showPanel('pages')"><span class="nav-icon">&#128196;</span> Pages</a></li>
+        <li><a data-panel="settings" onclick="showPanel('settings')"><span class="nav-icon">&#9881;</span> Settings</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+      </div>
+    </aside>
+
+    <div class="main-content">
+
+      <!-- OVERVIEW -->
+      <div class="panel active" id="panel-overview">
+        <div class="page-header">
+          <h2>Dashboard Overview</h2>
+          <span class="badge">Live</span>
+        </div>
+        <div class="stat-cards" id="overviewStats"></div>
+        <div class="card">
+          <div class="card-title">Quick Actions</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showPanel('hero')">Edit Hero</button>
+            <button class="btn btn-gold" onclick="showPanel('books')">Manage Books</button>
+            <button class="btn btn-outline" onclick="showPanel('pages')">Create New Page</button>
+            <a href="index.html" target="_blank" class="btn btn-outline">View Live Site &#8599;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="panel" id="panel-hero">
+        <div class="page-header"><h2>Hero Section</h2></div>
+        <div class="card">
+          <div class="card-title">Hero Content</div>
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="heroName" placeholder="Shekhar Dutt">
+          </div>
+          <div class="form-group">
+            <label>Tagline</label>
+            <input type="text" id="heroTagline" placeholder="Co-Founder & Faculty...">
+          </div>
+          <div class="form-group">
+            <label>Quote</label>
+            <input type="text" id="heroQuote" placeholder="Engineering taught me...">
+          </div>
+          <div class="card-title" style="margin-top:24px;">Stats Bar</div>
+          <div id="heroStatsEditor"></div>
+          <button class="btn btn-primary" style="margin-top:20px;" onclick="saveHero()">Save Hero Section</button>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="panel" id="panel-about">
+        <div class="page-header"><h2>About Section</h2></div>
+        <div class="card">
+          <div class="card-title">About Content</div>
+          <div class="form-group">
+            <label>Paragraph 1</label>
+            <textarea id="aboutP1" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Paragraph 2</label>
+            <textarea id="aboutP2" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Profile Photo</label>
+            <div style="display:flex; gap:12px; margin-bottom:12px;">
+              <div style="flex:1;">
+                <input type="file" id="photoFileInput" accept="image/jpeg,image/png,image/webp" style="display:block; padding:8px; border:1.5px solid #E5E7EB; border-radius:6px; width:100%; cursor:pointer;">
+                <div style="font-size:0.75rem; color:#6B7280; margin-top:6px;">JPG, PNG, or WebP · Max 2 MB · 4:5 aspect ratio</div>
+              </div>
+              <div style="width:120px; flex-shrink:0;">
+                <div id="photoPreview" style="width:100%; aspect-ratio:4/5; background:#F3F4F6; border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; color:#9CA3AF; font-size:0.8rem; text-align:center; padding:8px;">
+                  No photo
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="aboutPhoto">
+          </div>
+          <button class="btn btn-primary" onclick="saveAbout()">Save About Section</button>
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENTS -->
+      <div class="panel" id="panel-achievements">
+        <div class="page-header"><h2>Achievements</h2></div>
+        <div class="card">
+          <div class="card-title">Achievement Cards</div>
+          <div id="achieveList"></div>
+          <button class="btn btn-outline" style="margin-top:16px;" onclick="addAchieve()">+ Add Achievement</button>
+          <button class="btn btn-primary" style="margin-top:16px;margin-left:12px;" onclick="saveAchieve()">Save Achievements</button>
+        </div>
+      </div>
+
+      <!-- BOOKS -->
+      <div class="panel" id="panel-books">
+        <div class="page-header">
+          <h2>Recommended Books</h2>
+          <button class="btn btn-primary btn-sm" onclick="openBookModal()">+ Add Book</button>
+        </div>
+        <div class="card">
+          <table class="item-table">
+            <thead><tr><th>Title</th><th>Description</th><th>Link</th><th>Actions</th></tr></thead>
+            <tbody id="booksTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EBOOKS -->
+      <div class="panel" id="panel-ebooks">
+        <div class="page-header">
+          <h2>eBooks for Sale</h2>
+          <button class="btn btn-primary btn-sm" onclick="openEbookModal()">+ Add eBook</button>
+        </div>
+        <div class="card">
+          <table class="item-table">
+            <thead><tr><th>Title</th><th>Price</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody id="ebooksTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MEDIA -->
+      <div class="panel" id="panel-media">
+        <div class="page-header">
+          <h2>Media Mentions</h2>
+          <button class="btn btn-primary btn-sm" onclick="openMediaModal()">+ Add Media</button>
+        </div>
+        <div class="card">
+          <table class="item-table">
+            <thead><tr><th>Source</th><th>Quote</th><th>Link</th><th>Actions</th></tr></thead>
+            <tbody id="mediaTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGES -->
+      <div class="panel" id="panel-pages">
+        <div class="page-header">
+          <h2>Custom Pages</h2>
+          <button class="btn btn-primary btn-sm" onclick="openPageModal()">+ Create Page</button>
+        </div>
+        <div class="card">
+          <p style="color:var(--grey-text);font-size:0.9rem;margin-bottom:20px;">Create new pages with custom sections. Pages are generated as standalone HTML files that match your portfolio design.</p>
+          <table class="item-table">
+            <thead><tr><th>Page Title</th><th>Slug</th><th>Sections</th><th>Actions</th></tr></thead>
+            <tbody id="pagesTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="page-header"><h2>Settings</h2></div>
+        <div class="card">
+          <div class="card-title">Change Password</div>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="settCurrentPass">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="settNewPass">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" id="settConfirmPass">
+          </div>
+          <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Social Links</div>
+          <div class="card-grid">
+            <div class="form-group"><label>Instagram</label><input type="url" id="settInsta" placeholder="https://instagram.com/..."></div>
+            <div class="form-group"><label>LinkedIn</label><input type="url" id="settLinkedin" placeholder="https://linkedin.com/in/..."></div>
+            <div class="form-group"><label>Twitter/X</label><input type="url" id="settTwitter" placeholder="https://twitter.com/..."></div>
+            <div class="form-group"><label>YouTube</label><input type="url" id="settYoutube" placeholder="https://youtube.com/..."></div>
+            <div class="form-group"><label>Calendly</label><input type="url" id="settCalendly" placeholder="https://calendly.com/..."></div>
+            <div class="form-group"><label>Website</label><input type="url" id="settWebsite" placeholder="https://sleepyclasses.com"></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:12px;" onclick="saveSettings()">Save Settings</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Export / Import Data</div>
+          <p style="font-size:0.88rem;color:var(--grey-text);margin-bottom:16px;">Download all CMS data as JSON or import a backup.</p>
+          <div style="display:flex;gap:12px;">
+            <button class="btn btn-outline" onclick="exportData()">Export JSON</button>
+            <label class="btn btn-outline" style="cursor:pointer;">Import JSON <input type="file" accept=".json" style="display:none;" onchange="importData(event)"></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal" id="modalContent"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== DATA STORE =====
+    const STORAGE_KEY = 'sd_cms_data';
+    const CRED_KEY = 'sd_cms_creds';
+
+    function getDefaults() {
+      return {
+        hero: {
+          name: 'Shekhar Dutt',
+          tagline: 'Co-Founder &amp; Faculty (Sociology &amp; Economy) | Sleepy Classes IAS',
+          quote: 'Engineering taught me how a society is built. Sociology is teaching me how a society is formed.',
+          stats: [
+            { number: '1M', label: 'YouTube Subscribers' },
+            { number: '125M', label: 'Views' },
+            { number: '200K', label: 'Students' },
+            { number: '500', label: 'UPSC Ranks' },
+            { number: '16', label: 'Years Teaching' }
+          ]
+        },
+        about: {
+          para1: "Shekhar Dutt is Co-Founder of Sleepy Classes IAS — one of India's leading online UPSC coaching platforms. With a BE (Mechanical Engineering) from PEC Chandigarh and MBA (Finance) from Panjab University, he is a self-taught Sociology expert with 16+ years of teaching experience.",
+          para2: 'He teaches Sociology Optional and GS Economy, and has guided students to AIR 2, AIR 5, AIR 13 and multiple single-digit UPSC ranks.',
+          photo: 'profile-photo.jpg'
+        },
+        achievements: [
+          { value: 'AIR 2, 5, 13', label: 'Top single-digit UPSC ranks produced' },
+          { value: '1M+', label: 'YouTube Subscribers' },
+          { value: '100+', label: 'Courses on Sleepy Classes' },
+          { value: '8.8M+', label: 'Watch Hours on YouTube' },
+          { value: '200K+', label: 'Students Enrolled' }
+        ],
+        books: [
+          { title: 'Sociology: Themes and Perspectives', desc: 'A must-read foundational text for understanding sociological theories.', link: '#', coverUrl: '' },
+          { title: 'Indian Society — Nadeem Hasnain', desc: 'Essential for Paper II — covers caste, tribe, kinship, and social change.', link: '#', coverUrl: '' },
+          { title: 'Social Change in Modern India — M.N. Srinivas', desc: 'Classic text on Sanskritization, dominant caste, and social mobility.', link: '#', coverUrl: '' },
+          { title: 'Sociological Theory — George Ritzer', desc: 'Comprehensive coverage of classical and contemporary sociological theories.', link: '#', coverUrl: '' }
+        ],
+        ebooks: [
+          { title: 'Sociology Optional Notes — Shekhar Dutt', price: '₹999', desc: 'Comprehensive notes covering Paper I & II with answer writing frameworks.', link: '#', coverUrl: '' },
+          { title: 'GS Economy Quick Revision Guide', price: '₹499', desc: 'Concise revision notes for GS Economy with diagrams and flowcharts.', link: '#', coverUrl: '' }
+        ],
+        media: [],
+        pages: [],
+        settings: {
+          instagram: 'https://www.instagram.com/simplifiedsd/',
+          linkedin: 'https://in.linkedin.com/in/shekhar-dutt-aa71671b',
+          twitter: 'https://twitter.com/DuttShekhar',
+          youtube: 'https://www.youtube.com/playlist?list=PLu-Me-WBRrV4FqQPIe73EPWr5FQgmatlx',
+          calendly: 'https://calendly.com/simplifiedbysd',
+          website: 'https://sleepyclasses.com'
+        }
+      };
+    }
+
+    function loadData() {
+      try {
+        const d = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return d || getDefaults();
+      } catch { return getDefaults(); }
+    }
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    let DATA = loadData();
+
+    // ===== AUTH =====
+    function getCredentials() {
+      try {
+        return JSON.parse(localStorage.getItem(CRED_KEY)) || { user: 'admin', pass: 'shekhar2026' };
+      } catch { return { user: 'admin', pass: 'shekhar2026' }; }
+    }
+
+    function doLogin() {
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value;
+      const creds = getCredentials();
+      if (user === creds.user && pass === creds.pass) {
+        sessionStorage.setItem('sd_logged_in', '1');
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadDashboard();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function doLogout() {
+      sessionStorage.removeItem('sd_logged_in');
+      location.reload();
+    }
+
+    function checkAuth() {
+      if (sessionStorage.getItem('sd_logged_in') === '1') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadDashboard();
+      }
+    }
+
+    function changePassword() {
+      const curr = document.getElementById('settCurrentPass').value;
+      const newP = document.getElementById('settNewPass').value;
+      const conf = document.getElementById('settConfirmPass').value;
+      const creds = getCredentials();
+      if (curr !== creds.pass) return toast('Current password is incorrect', true);
+      if (newP.length < 4) return toast('Password must be at least 4 characters', true);
+      if (newP !== conf) return toast('Passwords do not match', true);
+      creds.pass = newP;
+      localStorage.setItem(CRED_KEY, JSON.stringify(creds));
+      document.getElementById('settCurrentPass').value = '';
+      document.getElementById('settNewPass').value = '';
+      document.getElementById('settConfirmPass').value = '';
+      toast('Password updated successfully!');
+    }
+
+    // ===== NAVIGATION =====
+    function showPanel(id) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + id).classList.add('active');
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      document.querySelector('[data-panel="'+id+'"]').classList.add('active');
+      document.querySelector('.sidebar').classList.remove('open');
+      if (id === 'overview') renderOverview();
+    }
+
+    // ===== TOAST =====
+    function toast(msg, isErr) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = isErr ? 'var(--red)' : 'var(--navy)';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ===== MODAL =====
+    function openModal(html) {
+      document.getElementById('modalContent').innerHTML = html;
+      document.getElementById('modalOverlay').classList.add('show');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+    }
+
+    // ===== OVERVIEW =====
+    function renderOverview() {
+      const d = DATA;
+      const html = `
+        <div class="stat-card"><div class="num">${d.books.length}</div><div class="lbl">Books</div></div>
+        <div class="stat-card"><div class="num">${d.ebooks.length}</div><div class="lbl">eBooks</div></div>
+        <div class="stat-card"><div class="num">${d.media.length}</div><div class="lbl">Media Mentions</div></div>
+        <div class="stat-card"><div class="num">${d.achievements.length}</div><div class="lbl">Achievements</div></div>
+        <div class="stat-card"><div class="num">${(d.pages||[]).length}</div><div class="lbl">Custom Pages</div></div>
+      `;
+      document.getElementById('overviewStats').innerHTML = html;
+    }
+
+    // ===== HERO EDITOR =====
+    function loadHero() {
+      const h = DATA.hero;
+      document.getElementById('heroName').value = h.name;
+      document.getElementById('heroTagline').value = h.tagline.replace(/&amp;/g, '&');
+      document.getElementById('heroQuote').value = h.quote;
+      const container = document.getElementById('heroStatsEditor');
+      container.innerHTML = h.stats.map((s, i) => `
+        <div class="card-grid" style="margin-bottom:10px;">
+          <div class="form-group"><label>Number ${i+1}</label><input type="text" id="stat_num_${i}" value="${s.number}"></div>
+          <div class="form-group"><label>Label ${i+1}</label><input type="text" id="stat_lbl_${i}" value="${s.label}"></div>
+        </div>
+      `).join('');
+    }
+    function saveHero() {
+      DATA.hero.name = document.getElementById('heroName').value;
+      DATA.hero.tagline = document.getElementById('heroTagline').value;
+      DATA.hero.quote = document.getElementById('heroQuote').value;
+      DATA.hero.stats = DATA.hero.stats.map((s, i) => ({
+        number: document.getElementById('stat_num_'+i).value,
+        label: document.getElementById('stat_lbl_'+i).value
+      }));
+      saveData(DATA);
+      toast('Hero section saved!');
+    }
+
+    // ===== ABOUT EDITOR =====
+    function loadAbout() {
+      document.getElementById('aboutP1').value = DATA.about.para1;
+      document.getElementById('aboutP2').value = DATA.about.para2;
+      document.getElementById('aboutPhoto').value = DATA.about.photo || '';
+
+      // Show preview if photo exists
+      const photoPreview = document.getElementById('photoPreview');
+      if (DATA.about.photo) {
+        photoPreview.innerHTML = `<img src="${DATA.about.photo}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        photoPreview.innerHTML = 'No photo';
+      }
+
+      // Setup file input listener
+      const photoInput = document.getElementById('photoFileInput');
+      if (photoInput && !photoInput.dataset.listenerSet) {
+        photoInput.addEventListener('change', handlePhotoUpload);
+        photoInput.dataset.listenerSet = 'true';
+      }
+    }
+
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Check size
+      if (file.size > 2 * 1024 * 1024) {
+        alert('File is too large (max 2 MB). Please compress the image first.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const dataURL = event.target.result;
+        document.getElementById('aboutPhoto').value = dataURL;
+
+        // Show preview
+        const photoPreview = document.getElementById('photoPreview');
+        photoPreview.innerHTML = `<img src="${dataURL}" style="width:100%;height:100%;object-fit:cover;">`;
+      };
+      reader.readAsDataURL(file);
+    }
+    function saveAbout() {
+      DATA.about.para1 = document.getElementById('aboutP1').value;
+      DATA.about.para2 = document.getElementById('aboutP2').value;
+      DATA.about.photo = document.getElementById('aboutPhoto').value;
+      saveData(DATA);
+      toast('About section saved!');
+    }
+
+    // ===== ACHIEVEMENTS =====
+    function loadAchieve() {
+      renderAchieveList();
+    }
+    function renderAchieveList() {
+      const c = document.getElementById('achieveList');
+      c.innerHTML = DATA.achievements.map((a, i) => `
+        <div class="card-grid" style="margin-bottom:10px;align-items:end;">
+          <div class="form-group"><label>Value</label><input type="text" id="ach_v_${i}" value="${a.value}"></div>
+          <div style="display:flex;gap:8px;align-items:end;">
+            <div class="form-group" style="flex:1;"><label>Label</label><input type="text" id="ach_l_${i}" value="${a.label}"></div>
+            <button class="btn btn-danger btn-sm" style="margin-bottom:20px;" onclick="removeAchieve(${i})">&#215;</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function addAchieve() {
+      DATA.achievements.push({ value: '', label: '' });
+      renderAchieveList();
+    }
+    function removeAchieve(i) {
+      DATA.achievements.splice(i, 1);
+      renderAchieveList();
+    }
+    function saveAchieve() {
+      DATA.achievements = DATA.achievements.map((a, i) => ({
+        value: document.getElementById('ach_v_'+i).value,
+        label: document.getElementById('ach_l_'+i).value
+      }));
+      saveData(DATA);
+      toast('Achievements saved!');
+    }
+
+    // ===== BOOKS =====
+    function renderBooks() {
+      const tb = document.getElementById('booksTable');
+      tb.innerHTML = DATA.books.map((b, i) => `
+        <tr>
+          <td><strong>${b.title}</strong></td>
+          <td style="max-width:200px;color:var(--grey-text);font-size:0.84rem;">${b.desc}</td>
+          <td><a href="${b.link}" target="_blank" style="color:var(--navy);font-size:0.84rem;">${b.link.substring(0,30)}...</a></td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" onclick="editBook(${i})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteBook(${i})">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    function openBookModal(idx) {
+      const b = idx !== undefined ? DATA.books[idx] : { title: '', desc: '', link: '', coverUrl: '' };
+      const isEdit = idx !== undefined;
+      openModal(`
+        <h3>${isEdit ? 'Edit' : 'Add'} Book</h3>
+        <div class="form-group"><label>Title</label><input type="text" id="bkTitle" value="${b.title}"></div>
+        <div class="form-group"><label>Description</label><textarea id="bkDesc">${b.desc}</textarea></div>
+        <div class="form-group"><label>Amazon Link</label><input type="url" id="bkLink" value="${b.link}"></div>
+        <div class="form-group"><label>Cover Image URL (optional)</label><input type="text" id="bkCover" value="${b.coverUrl || ''}"></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveBook(${isEdit ? idx : -1})">Save</button>
+        </div>
+      `);
+    }
+    function editBook(i) { openBookModal(i); }
+    function deleteBook(i) {
+      DATA.books.splice(i, 1);
+      saveData(DATA);
+      renderBooks();
+      toast('Book deleted');
+    }
+    function saveBook(idx) {
+      const obj = {
+        title: document.getElementById('bkTitle').value,
+        desc: document.getElementById('bkDesc').value,
+        link: document.getElementById('bkLink').value,
+        coverUrl: document.getElementById('bkCover').value
+      };
+      if (idx === -1) DATA.books.push(obj);
+      else DATA.books[idx] = obj;
+      saveData(DATA);
+      renderBooks();
+      closeModal();
+      toast('Book saved!');
+    }
+
+    // ===== EBOOKS =====
+    function renderEbooks() {
+      const tb = document.getElementById('ebooksTable');
+      tb.innerHTML = DATA.ebooks.map((e, i) => `
+        <tr>
+          <td><strong>${e.title}</strong></td>
+          <td style="color:var(--gold);font-weight:600;">${e.price}</td>
+          <td style="max-width:200px;color:var(--grey-text);font-size:0.84rem;">${e.desc}</td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" onclick="editEbook(${i})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteEbook(${i})">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    function openEbookModal(idx) {
+      const e = idx !== undefined ? DATA.ebooks[idx] : { title: '', price: '', desc: '', link: '', coverUrl: '' };
+      const isEdit = idx !== undefined;
+      openModal(`
+        <h3>${isEdit ? 'Edit' : 'Add'} eBook</h3>
+        <div class="form-group"><label>Title</label><input type="text" id="ebTitle" value="${e.title}"></div>
+        <div class="form-group"><label>Price (e.g. ₹999)</label><input type="text" id="ebPrice" value="${e.price}"></div>
+        <div class="form-group"><label>Description</label><textarea id="ebDesc">${e.desc}</textarea></div>
+        <div class="form-group"><label>Buy Link (Gumroad, etc.)</label><input type="url" id="ebLink" value="${e.link}"></div>
+        <div class="form-group"><label>Cover Image URL (optional)</label><input type="text" id="ebCover" value="${e.coverUrl || ''}"></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveEbook(${isEdit ? idx : -1})">Save</button>
+        </div>
+      `);
+    }
+    function editEbook(i) { openEbookModal(i); }
+    function deleteEbook(i) {
+      DATA.ebooks.splice(i, 1);
+      saveData(DATA);
+      renderEbooks();
+      toast('eBook deleted');
+    }
+    function saveEbook(idx) {
+      const obj = {
+        title: document.getElementById('ebTitle').value,
+        price: document.getElementById('ebPrice').value,
+        desc: document.getElementById('ebDesc').value,
+        link: document.getElementById('ebLink').value,
+        coverUrl: document.getElementById('ebCover').value
+      };
+      if (idx === -1) DATA.ebooks.push(obj);
+      else DATA.ebooks[idx] = obj;
+      saveData(DATA);
+      renderEbooks();
+      closeModal();
+      toast('eBook saved!');
+    }
+
+    // ===== MEDIA =====
+    function renderMedia() {
+      const tb = document.getElementById('mediaTable');
+      if (!DATA.media.length) {
+        tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--grey-text);">No media mentions yet. Click "+ Add Media" to add one.</td></tr>';
+        return;
+      }
+      tb.innerHTML = DATA.media.map((m, i) => `
+        <tr>
+          <td><strong>${m.source}</strong></td>
+          <td style="max-width:250px;color:var(--grey-text);font-size:0.84rem;font-style:italic;">"${m.quote.substring(0, 80)}..."</td>
+          <td><a href="${m.link}" target="_blank" style="color:var(--navy);font-size:0.84rem;">Link</a></td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" onclick="editMedia(${i})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteMedia(${i})">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    function openMediaModal(idx) {
+      const m = idx !== undefined ? DATA.media[idx] : { source: '', quote: '', link: '', logo: '' };
+      const isEdit = idx !== undefined;
+      openModal(`
+        <h3>${isEdit ? 'Edit' : 'Add'} Media Mention</h3>
+        <div class="form-group"><label>Source / Publication Name</label><input type="text" id="mdSource" value="${m.source}"></div>
+        <div class="form-group"><label>Quote / Excerpt</label><textarea id="mdQuote" rows="3">${m.quote}</textarea></div>
+        <div class="form-group"><label>Article Link</label><input type="url" id="mdLink" value="${m.link}"></div>
+        <div class="form-group"><label>Logo Text (short, e.g. "TOI")</label><input type="text" id="mdLogo" value="${m.logo || ''}"></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveMedia(${isEdit ? idx : -1})">Save</button>
+        </div>
+      `);
+    }
+    function editMedia(i) { openMediaModal(i); }
+    function deleteMedia(i) {
+      DATA.media.splice(i, 1);
+      saveData(DATA);
+      renderMedia();
+      toast('Media mention deleted');
+    }
+    function saveMedia(idx) {
+      const obj = {
+        source: document.getElementById('mdSource').value,
+        quote: document.getElementById('mdQuote').value,
+        link: document.getElementById('mdLink').value,
+        logo: document.getElementById('mdLogo').value
+      };
+      if (idx === -1) DATA.media.push(obj);
+      else DATA.media[idx] = obj;
+      saveData(DATA);
+      renderMedia();
+      closeModal();
+      toast('Media mention saved!');
+    }
+
+    // ===== PAGES =====
+    function renderPages() {
+      const tb = document.getElementById('pagesTable');
+      const pages = DATA.pages || [];
+      if (!pages.length) {
+        tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--grey-text);">No custom pages yet. Click "+ Create Page" to add one.</td></tr>';
+        return;
+      }
+      tb.innerHTML = pages.map((p, i) => `
+        <tr>
+          <td><strong>${p.title}</strong></td>
+          <td style="font-family:monospace;font-size:0.84rem;">${p.slug}.html</td>
+          <td>${p.sections.length} section${p.sections.length !== 1 ? 's' : ''}</td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" onclick="editPage(${i})">Edit</button>
+            <button class="btn btn-gold btn-sm" onclick="generatePage(${i})">Generate HTML</button>
+            <button class="btn btn-danger btn-sm" onclick="deletePage(${i})">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    function openPageModal(idx) {
+      const p = idx !== undefined ? (DATA.pages||[])[idx] : { title: '', slug: '', sections: [{ heading: '', content: '' }] };
+      const isEdit = idx !== undefined;
+      let sectionsHtml = (p.sections || []).map((s, si) => `
+        <div style="background:var(--grey-bg);padding:16px;border-radius:8px;margin-bottom:12px;" id="pgSec_${si}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:0.85rem;">Section ${si+1}</strong>
+            <button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()" style="padding:4px 8px;">&#215;</button>
+          </div>
+          <div class="form-group"><label>Heading</label><input type="text" class="pgSecHeading" value="${s.heading}"></div>
+          <div class="form-group"><label>Content (HTML or text)</label><textarea class="pgSecContent" rows="4">${s.content}</textarea></div>
+        </div>
+      `).join('');
+      openModal(`
+        <h3>${isEdit ? 'Edit' : 'Create'} Page</h3>
+        <div class="form-group"><label>Page Title</label><input type="text" id="pgTitle" value="${p.title}"></div>
+        <div class="form-group"><label>URL Slug</label><input type="text" id="pgSlug" value="${p.slug}" placeholder="e.g. resources"></div>
+        <div id="pgSectionsWrap">${sectionsHtml}</div>
+        <button class="btn btn-outline btn-sm" style="margin-bottom:12px;" onclick="addPageSection()">+ Add Section</button>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="savePage(${isEdit ? idx : -1})">Save Page</button>
+        </div>
+      `);
+    }
+    function addPageSection() {
+      const wrap = document.getElementById('pgSectionsWrap');
+      const div = document.createElement('div');
+      div.style.cssText = 'background:var(--grey-bg);padding:16px;border-radius:8px;margin-bottom:12px;';
+      div.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <strong style="font-size:0.85rem;">New Section</strong>
+          <button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()" style="padding:4px 8px;">&#215;</button>
+        </div>
+        <div class="form-group"><label>Heading</label><input type="text" class="pgSecHeading" value=""></div>
+        <div class="form-group"><label>Content (HTML or text)</label><textarea class="pgSecContent" rows="4"></textarea></div>
+      `;
+      wrap.appendChild(div);
+    }
+    function editPage(i) { openPageModal(i); }
+    function deletePage(i) {
+      DATA.pages.splice(i, 1);
+      saveData(DATA);
+      renderPages();
+      toast('Page deleted');
+    }
+    function savePage(idx) {
+      const headings = document.querySelectorAll('.pgSecHeading');
+      const contents = document.querySelectorAll('.pgSecContent');
+      const sections = [];
+      headings.forEach((h, i) => {
+        sections.push({ heading: h.value, content: contents[i].value });
+      });
+      const obj = {
+        title: document.getElementById('pgTitle').value,
+        slug: document.getElementById('pgSlug').value.toLowerCase().replace(/[^a-z0-9-]/g, '-'),
+        sections: sections
+      };
+      if (!DATA.pages) DATA.pages = [];
+      if (idx === -1) DATA.pages.push(obj);
+      else DATA.pages[idx] = obj;
+      saveData(DATA);
+      renderPages();
+      closeModal();
+      toast('Page saved!');
+    }
+    function generatePage(idx) {
+      const p = DATA.pages[idx];
+      const sectionsHtml = p.sections.map(s => `
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">${s.heading}</h2>
+        <div class="section-content">${s.content}</div>
+      </div>
+    </section>`).join('\n');
+
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${p.title} — Shekhar Dutt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--navy:#1A3C6E;--gold:#C9A84C;--white:#FFFFFF;--black:#0A0A0A;--grey-bg:#F7F7F7;--grey-text:#6B7280;--grey-border:#E0E0E0;--radius:12px;}
+    body{font-family:'Inter',sans-serif;color:var(--black);background:var(--white);line-height:1.7;}
+    h1,h2,h3{font-family:'Playfair Display',serif;font-weight:700;line-height:1.2;}
+    a{text-decoration:none;color:inherit;}
+    .container{max-width:1140px;margin:0 auto;padding:0 24px;}
+    .section{padding:80px 0;}
+    .section-title{font-size:2rem;color:var(--navy);margin-bottom:24px;position:relative;}
+    .section-title::after{content:'';display:block;width:60px;height:4px;background:var(--gold);border-radius:2px;margin-top:12px;}
+    .section-content{font-size:1.05rem;color:#374151;line-height:1.8;}
+    .page-nav{background:var(--white);border-bottom:1px solid var(--grey-border);padding:20px 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+    .page-nav .container{display:flex;align-items:center;justify-content:space-between;}
+    .page-nav a{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--navy);}
+    .back-link{font-size:0.88rem;color:var(--navy);font-weight:500;}
+    .footer{background:var(--black);color:rgba(255,255,255,0.5);padding:32px 0;text-align:center;font-size:0.85rem;}
+  </style>
+</head>
+<body>
+  <nav class="page-nav">
+    <div class="container">
+      <a href="index.html">Shekhar Dutt</a>
+      <a href="index.html" class="back-link">&larr; Back to Home</a>
+    </div>
+  </nav>
+  ${sectionsHtml}
+  <footer class="footer">
+    <div class="container">&copy; 2026 Shekhar Dutt | Sleepy Classes IAS</div>
+  </footer>
+</body>
+</html>`;
+
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = p.slug + '.html';
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('Page "' + p.title + '" downloaded as ' + p.slug + '.html');
+    }
+
+    // ===== SETTINGS =====
+    function loadSettings() {
+      const s = DATA.settings || {};
+      document.getElementById('settInsta').value = s.instagram || '';
+      document.getElementById('settLinkedin').value = s.linkedin || '';
+      document.getElementById('settTwitter').value = s.twitter || '';
+      document.getElementById('settYoutube').value = s.youtube || '';
+      document.getElementById('settCalendly').value = s.calendly || '';
+      document.getElementById('settWebsite').value = s.website || '';
+    }
+    function saveSettings() {
+      DATA.settings = {
+        instagram: document.getElementById('settInsta').value,
+        linkedin: document.getElementById('settLinkedin').value,
+        twitter: document.getElementById('settTwitter').value,
+        youtube: document.getElementById('settYoutube').value,
+        calendly: document.getElementById('settCalendly').value,
+        website: document.getElementById('settWebsite').value
+      };
+      saveData(DATA);
+      toast('Settings saved!');
+    }
+
+    // ===== IMPORT / EXPORT =====
+    function exportData() {
+      const blob = new Blob([JSON.stringify(DATA, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'shekhar-cms-backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('Data exported!');
+    }
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          DATA = JSON.parse(e.target.result);
+          saveData(DATA);
+          loadDashboard();
+          toast('Data imported successfully!');
+        } catch { toast('Invalid JSON file', true); }
+      };
+      reader.readAsText(file);
+    }
+
+    // ===== LOAD DASHBOARD =====
+    function loadDashboard() {
+      DATA = loadData();
+      renderOverview();
+      loadHero();
+      loadAbout();
+      loadAchieve();
+      renderBooks();
+      renderEbooks();
+      renderMedia();
+      renderPages();
+      loadSettings();
+    }
+
+    // Init
+    checkAuth();
+  </script>
+</body>
+</html>

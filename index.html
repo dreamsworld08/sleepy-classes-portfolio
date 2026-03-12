@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shekhar Dutt — Co-Founder & Faculty | Sleepy Classes IAS</title>
+  <meta name="description" content="Shekhar Dutt is Co-Founder of Sleepy Classes IAS, teaching Sociology Optional & GS Economy for UPSC with 16+ years of experience.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* ── Ali Abdaal-inspired warm light palette ── */
+      --bg:      #FAFAF8;          /* warm off-white — his signature background     */
+      --bg2:     #F2F1ED;          /* slightly warmer for strips / surfaces         */
+      --surface:  rgba(0,0,0,0.03);
+      --surface2: rgba(0,0,0,0.055);
+      --border:   rgba(0,0,0,0.07);
+      --border2:  rgba(0,0,0,0.12);
+      --text:    #111111;          /* near-black — his primary text                 */
+      --text2:   #4B5563;          /* mid-grey — his secondary / body copy          */
+      --text3:   #9CA3AF;          /* light grey — captions, labels                 */
+      /* ── Gen Z accent colours (kept vibrant on light bg) ── */
+      --violet:  #6B5CE7;
+      --violet2: #7C6FFF;
+      --pink:    #E8457A;
+      --cyan:    #0EA5E9;
+      --gold:    #D97706;
+      --green:   #16A34A;
+      --radius-sm: 12px;
+      --radius:    20px;
+      --radius-lg: 28px;
+      --radius-xl: 40px;
+      --shadow:   0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      --shadow-md:0 4px 24px rgba(0,0,0,0.10);
+      --glow-v:   0 4px 24px rgba(107,92,231,0.15);
+      --glow-p:   0 4px 24px rgba(232,69,122,0.15);
+      --t: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Subtle warm grain — barely visible on light bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    h1, h2, h3 { font-family: 'Bricolage Grotesque', sans-serif; line-height: 1.1; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ===== UTILITIES ===== */
+    .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+    .section { padding: 120px 0; }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--violet);
+      background: rgba(107,92,231,0.07);
+      border: 1px solid rgba(107,92,231,0.18);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .section-label::before { content: ''; width: 6px; height: 6px; background: var(--violet); border-radius: 50%; }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .grad-text {
+      background: linear-gradient(135deg, var(--violet) 0%, var(--pink) 50%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text2);
+      max-width: 560px;
+      margin-bottom: 56px;
+      line-height: 1.8;
+    }
+
+    /* ===== GLASS CARD ===== */
+    .glass {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass:hover {
+      background: var(--surface2);
+      border-color: var(--border2);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: var(--t);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: var(--t);
+    }
+    .btn:hover::after { background: rgba(255,255,255,0.06); }
+    .btn-grad {
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(124,111,255,0.35);
+    }
+    .btn-grad:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,111,255,0.45); }
+    .btn-glass {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border2);
+    }
+    .btn-glass:hover { transform: translateY(-2px); background: var(--surface2); border-color: var(--violet); }
+    .btn-sm { padding: 10px 20px; font-size: 0.82rem; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: calc(100% - 48px);
+      max-width: 1000px;
+      background: rgba(250,250,248,0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border2);
+      border-radius: 100px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      transition: var(--t);
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      max-width: 100%;
+    }
+    .nav-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 4px; align-items: center; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text2);
+      padding: 6px 14px;
+      border-radius: 100px;
+      transition: var(--t);
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface2); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--violet), var(--pink)) !important;
+      color: #fff !important;
+      padding: 8px 18px !important;
+      box-shadow: 0 2px 16px rgba(124,111,255,0.3);
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(124,111,255,0.4); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 1001; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text2); border-radius: 2px; transition: var(--t); }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translateY(7px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translateY(-7px); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Aurora blobs — subtle, far away */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .hero-blob-1 {
+      width: 600px; height: 600px;
+      top: -200px; right: -100px;
+      background: radial-gradient(circle, rgba(107,92,231,0.09) 0%, transparent 70%);
+    }
+    .hero-blob-2 {
+      width: 450px; height: 450px;
+      bottom: -100px; left: -80px;
+      background: radial-gradient(circle, rgba(232,69,122,0.06) 0%, transparent 70%);
+    }
+
+    /* Hero layout — two-column: text left, photo right */
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: center;
+      width: 100%;
+    }
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text2);
+      margin-bottom: 32px;
+      letter-spacing: 0.3px;
+    }
+    .hero-status-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .hero-name {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(2.6rem, 5.5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .hero-name-grad {
+      background: linear-gradient(135deg, var(--violet2) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-role {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--violet2);
+      margin-bottom: 20px;
+      letter-spacing: 0.2px;
+    }
+    .hero-bio {
+      font-size: 1rem;
+      color: var(--text2);
+      line-height: 1.85;
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+    .hero-bio em {
+      font-style: italic;
+      color: var(--text);
+    }
+    .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* Hero photo side */
+    .hero-photo-side { position: relative; z-index: 1; }
+    .hero-photo-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(160deg, rgba(124,111,255,0.4), rgba(255,107,157,0.3), transparent 60%);
+      border-radius: var(--radius-lg);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .hero-photo-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #EDE9FE, #FCE7F3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .photo-initials {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .photo-hint { font-size: 0.72rem; color: var(--text3); text-align: center; padding: 0 20px; line-height: 1.6; }
+
+    /* Stats strip — below the fold */
+    .stats-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0;
+      background: var(--bg2);
+    }
+    .stats-strip-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .stat-item .num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--violet2), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .stat-item .lbl {
+      font-size: 0.82rem;
+      color: var(--text3);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ===== ABOUT ===== */
+    .about { background: transparent; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .about-photo-wrap {
+      position: relative;
+    }
+    .about-photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--violet), var(--pink), var(--cyan));
+      border-radius: calc(var(--radius-lg) + 2px);
+      z-index: 0;
+    }
+    .about-photo {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg2);
+    }
+    .about-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .about-photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
+      gap: 12px;
+    }
+    .photo-initials {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .photo-hint {
+      font-size: 0.75rem;
+      color: var(--text3);
+      text-align: center;
+      padding: 0 20px;
+    }
+    /* about placeholder inherits .photo-specs / .photo-upload-btn from hero block above */
+    .about-float-tag {
+      position: absolute;
+      bottom: -16px;
+      right: -16px;
+      z-index: 2;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      box-shadow: var(--glow-v);
+    }
+    .about-float-tag .num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.5rem; font-weight: 800; color: #fff; }
+    .about-float-tag .lbl { font-size: 0.72rem; color: rgba(255,255,255,0.75); }
+    .about-text .section-title { margin-bottom: 24px; }
+    .about-text p {
+      font-size: 1rem;
+      color: var(--text2);
+      margin-bottom: 20px;
+      line-height: 1.9;
+    }
+    .cred-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .cred-tag {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 100px;
+      transition: var(--t);
+    }
+    .cred-tag:hover { border-color: var(--violet); color: var(--violet2); }
+
+    /* ===== ACHIEVEMENTS / BENTO GRID ===== */
+    .achievements { background: transparent; }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--t);
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--violet), var(--pink));
+      opacity: 0;
+      transition: var(--t);
+    }
+    .bento-card:hover {
+      background: var(--surface2);
+      border-color: rgba(124,111,255,0.25);
+      transform: translateY(-4px);
+      box-shadow: var(--glow-v);
+    }
+    .bento-card:hover::after { opacity: 1; }
+    .bento-card.wide { grid-column: span 2; }
+    .bento-card.tall { grid-row: span 2; }
+    .bento-card.featured {
+      background: linear-gradient(135deg, rgba(107,92,231,0.07), rgba(232,69,122,0.05));
+      border-color: rgba(107,92,231,0.18);
+    }
+    .bento-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+    }
+    .bento-val {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .bento-val.grad-text { font-size: 1.4rem; line-height: 1.3; }
+    .bento-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+    /* ===== BOOKS ===== */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .book-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--t);
+    }
+    .book-card:hover { transform: translateY(-4px); box-shadow: var(--glow-v); border-color: rgba(124,111,255,0.25); }
+    .book-cover {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #EDE9FE, #E0F2FE);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--text3);
+    }
+    .book-info { padding: 20px; }
+    .book-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .book-desc { font-size: 0.82rem; color: var(--text2); margin-bottom: 16px; line-height: 1.6; }
+
+    /* ===== EBOOKS ===== */
+    .ebooks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+    }
+    .ebook-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      overflow: hidden;
+      transition: var(--t);
+    }
+    .ebook-card:hover { transform: translateY(-4px); box-shadow: var(--glow-p); border-color: rgba(255,107,157,0.25); }
+    .ebook-cover {
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 16px;
+    }
+    .ebook-info { padding: 24px; }
+    .ebook-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .ebook-price { font-size: 1.3rem; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+    .ebook-desc { font-size: 0.82rem; color: var(--text2); margin-bottom: 16px; }
+
+    /* ===== MEDIA ===== */
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .media-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: var(--t); }
+    .media-card:hover { transform: translateY(-4px); border-color: rgba(124,111,255,0.25); }
+    .media-source { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .media-logo { width: 44px; height: 44px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text3); font-weight: 700; }
+    .media-source-name { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .media-quote { font-style: italic; font-size: 0.9rem; color: var(--text2); line-height: 1.7; margin-bottom: 16px; padding-left: 16px; border-left: 2px solid var(--violet); }
+    .media-link { font-size: 0.82rem; font-weight: 700; color: var(--violet2); display: inline-flex; align-items: center; gap: 6px; transition: var(--t); }
+    .media-link:hover { color: var(--pink); gap: 10px; }
+
+    /* ===== YOUTUBE ===== */
+    .youtube-wrap {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border2);
+      box-shadow: var(--glow-v);
+      margin-bottom: 20px;
+    }
+    .youtube-wrap iframe { display: block; }
+    .yt-labels {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .yt-label {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 18px;
+      border-radius: 100px;
+    }
+
+    /* ===== TWITTER ===== */
+    .twitter-wrap {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 28px;
+      min-height: 500px;
+    }
+
+    /* ===== CONSULT ===== */
+    .consult { position: relative; overflow: hidden; }
+    .consult-blob {
+      position: absolute;
+      width: 600px; height: 600px;
+      top: -200px; right: -200px;
+      background: radial-gradient(circle, rgba(124,111,255,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .consult-header { text-align: center; margin-bottom: 40px; }
+    .calendly-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--glow-v);
+    }
+
+    /* ===== COLLAB ===== */
+    .collab-card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(107,92,231,0.06), rgba(232,69,122,0.04));
+      border: 1px solid rgba(107,92,231,0.15);
+      border-radius: var(--radius-lg);
+      padding: 56px 48px;
+      text-align: center;
+    }
+    .collab-text { font-size: 1rem; color: var(--text2); margin-bottom: 32px; line-height: 1.8; }
+    .collab-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 32px;
+      background: transparent;
+    }
+    .footer-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .footer-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 0.85rem; color: var(--text3); transition: var(--t); }
+    .footer-links a:hover { color: var(--violet2); }
+    .footer-copy { font-size: 0.78rem; color: var(--text3); }
+    .footer-location { font-size: 0.72rem; color: var(--text3); }
+
+    /* ===== DIVIDER ===== */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border2), transparent);
+      margin: 0;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero .container { grid-template-columns: 1fr 340px; gap: 56px; }
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-card.wide { grid-column: span 2; }
+    }
+    @media (max-width: 860px) {
+      .hero .container { grid-template-columns: 1fr; gap: 48px; }
+      .hero-photo-side { max-width: 320px; }
+      .stats-strip-inner { justify-content: flex-start; gap: 16px 32px; }
+      .stat-divider { display: none; }
+    }
+    @media (max-width: 768px) {
+      .navbar { top: 12px; width: calc(100% - 24px); border-radius: 20px; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed;
+        top: 80px; left: 12px; right: 12px;
+        background: rgba(250,250,248,0.97);
+        backdrop-filter: blur(24px);
+        border: 1px solid var(--border2);
+        border-radius: 20px;
+        padding: 20px;
+        gap: 4px;
+        animation: fadeIn 0.2s ease;
+      }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+      .nav-links.open a { border-radius: 12px; padding: 10px 16px; }
+      .hamburger { display: flex; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .about-photo-wrap { max-width: 320px; margin: 0 auto; }
+      .about-float-tag { bottom: -12px; right: -8px; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .bento-card.wide { grid-column: span 1; }
+      .ebook-card { grid-template-columns: 1fr; }
+      .ebook-cover { aspect-ratio: 16/9; }
+      .section { padding: 80px 0; }
+      .collab-card { padding: 36px 24px; }
+      .collab-btns { flex-direction: column; align-items: stretch; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero-buttons { flex-direction: column; }
+      .hero-buttons .btn { justify-content: center; }
+      .stats-strip-inner { gap: 12px 24px; }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- AURORA BLOBS (fixed, site-wide — light-mode tuned) -->
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+    <div style="position:absolute;width:800px;height:800px;top:-300px;right:-300px;background:radial-gradient(circle,rgba(107,92,231,0.05) 0%,transparent 60%);border-radius:50%;filter:blur(80px);"></div>
+    <div style="position:absolute;width:600px;height:600px;bottom:0;left:-200px;background:radial-gradient(circle,rgba(232,69,122,0.04) 0%,transparent 60%);border-radius:50%;filter:blur(80px);"></div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#hero" class="nav-logo">Shekhar Dutt</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#achievements">Results</a></li>
+        <li><a href="#books">Books</a></li>
+        <li><a href="#ebooks">eBooks</a></li>
+        <li><a href="#youtube">YouTube</a></li>
+        <li><a href="#twitter">Twitter</a></li>
+        <li><a href="#collab">Collab</a></li>
+        <li><a href="#consult" class="nav-cta">Book Session</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="container">
+
+      <!-- Left: Text -->
+      <div class="hero-content">
+        <div class="hero-status">
+          <span class="hero-status-dot"></span>
+          Available for consultations
+        </div>
+        <h1 class="hero-name">
+          <span class="hero-name-grad">Shekhar</span> Dutt
+        </h1>
+        <p class="hero-role">Co-Founder &amp; Faculty — Sleepy Classes IAS</p>
+        <p class="hero-bio">
+          I teach Sociology Optional &amp; GS Economy for UPSC. With 16+ years of experience and
+          <em>500+ UPSC ranks</em> to my name, I believe complex ideas deserve simple, clear explanations.
+        </p>
+        <div class="hero-buttons">
+          <a href="#consult" class="btn btn-grad">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Book a 1:1 Session
+          </a>
+          <a href="https://sleepyclasses.com" target="_blank" rel="noopener" class="btn btn-glass">
+            Explore Courses
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Photo -->
+      <div class="hero-photo-side">
+        <div class="hero-photo-frame">
+          <img src="profile-photo.jpg" alt="Shekhar Dutt"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="hero-photo-placeholder" style="display:none;">
+            <div class="photo-initials">SD</div>
+            <div class="photo-hint">Place profile-photo.jpg<br>alongside index.html</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Stats strip — first thing after the fold -->
+  <div class="stats-strip">
+    <div class="container">
+      <div class="stats-strip-inner">
+        <div class="stat-item"><span class="num">1M+</span><span class="lbl">YouTube<br>Subscribers</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="num">125M+</span><span class="lbl">Total<br>Views</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="num">200K+</span><span class="lbl">Students<br>Enrolled</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="num">500+</span><span class="lbl">UPSC<br>Ranks</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="num">16+</span><span class="lbl">Years<br>Teaching</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-photo-wrap fade-up">
+          <div class="about-photo">
+            <img src="profile-photo.jpg" alt="Shekhar Dutt"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+              style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+            <div class="about-photo-placeholder" style="display:none;">
+              <div class="photo-initials">SD</div>
+              <div class="photo-hint">Place profile-photo.jpg<br>alongside index.html</div>
+            </div>
+          </div>
+          <div class="about-float-tag">
+            <div class="num">AIR 2, 5, 13</div>
+            <div class="lbl">Ranks Produced</div>
+          </div>
+        </div>
+        <div class="about-text fade-up">
+          <div class="section-label">About</div>
+          <h2 class="section-title">The Story<br>Behind the <span class="grad-text">Educator</span></h2>
+          <p>Shekhar Dutt is Co-Founder of Sleepy Classes IAS — one of India's leading online UPSC coaching platforms. With a BE (Mechanical Engineering) from PEC Chandigarh and MBA (Finance) from Panjab University, he is a self-taught Sociology expert with 16+ years of teaching experience.</p>
+          <p>He teaches Sociology Optional and GS Economy, and has guided students to AIR 2, AIR 5, AIR 13 and multiple single-digit UPSC ranks.</p>
+          <div class="cred-tags">
+            <span class="cred-tag">BE (Mech.) — PEC Chandigarh</span>
+            <span class="cred-tag">MBA (Finance) — Panjab University</span>
+            <span class="cred-tag">Sociology Optional Expert</span>
+            <span class="cred-tag">GS Economy Faculty</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ACHIEVEMENTS ===== -->
+  <section class="achievements section" id="achievements">
+    <div class="container">
+      <div class="section-label">Track Record</div>
+      <h2 class="section-title">Numbers That<br>Do the <span class="grad-text">Talking</span></h2>
+      <p class="section-sub">A decade and a half of results, trust, and relentless teaching — every number represents a life changed.</p>
+      <div class="bento-grid">
+        <div class="bento-card fade-up">
+          <div class="bento-icon">🏆</div>
+          <div class="bento-val">AIR 2, 5, 13</div>
+          <div class="bento-desc">Top single-digit UPSC ranks produced by students</div>
+        </div>
+        <div class="bento-card fade-up">
+          <div class="bento-icon">▶️</div>
+          <div class="bento-val">1M+</div>
+          <div class="bento-desc">YouTube Subscribers across Sleepy Classes</div>
+        </div>
+        <div class="bento-card fade-up">
+          <div class="bento-icon">📚</div>
+          <div class="bento-val">100+</div>
+          <div class="bento-desc">Courses available on Sleepy Classes platform</div>
+        </div>
+        <div class="bento-card wide featured fade-up">
+          <div class="bento-icon">🌍</div>
+          <div class="bento-val grad-text">"Knowledge knows no boundaries"</div>
+          <div class="bento-desc" style="margin-top:8px;">Viral moment — January 2025: A Pakistani CSS aspirant credited Shekhar Sir's Twitter posts for their civil service preparation, transcending international borders through the power of education.</div>
+        </div>
+        <div class="bento-card fade-up">
+          <div class="bento-icon">⏱️</div>
+          <div class="bento-val">8.8M+</div>
+          <div class="bento-desc">Watch hours on YouTube</div>
+        </div>
+        <div class="bento-card fade-up">
+          <div class="bento-icon">👥</div>
+          <div class="bento-val">200K+</div>
+          <div class="bento-desc">Students enrolled across all courses</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== BOOKS ===== -->
+  <section class="section" id="books">
+    <div class="container">
+      <div class="section-label">Reading List</div>
+      <h2 class="section-title">Books I <span class="grad-text">Recommend</span><br>for UPSC Sociology</h2>
+      <p class="section-sub">Handpicked reads that will form the backbone of your Sociology Optional preparation.</p>
+      <div class="books-grid">
+        <div class="book-card fade-up">
+          <div class="book-cover">📖 Book Cover</div>
+          <div class="book-info">
+            <h3 class="book-title">Sociology: Themes and Perspectives</h3>
+            <p class="book-desc">A must-read foundational text for understanding sociological theories and thinkers.</p>
+            <a href="#" class="btn btn-grad btn-sm">Buy on Amazon →</a>
+          </div>
+        </div>
+        <div class="book-card fade-up">
+          <div class="book-cover">📖 Book Cover</div>
+          <div class="book-info">
+            <h3 class="book-title">Indian Society — Nadeem Hasnain</h3>
+            <p class="book-desc">Essential for Paper II — covers caste, tribe, kinship, and social change in India.</p>
+            <a href="#" class="btn btn-grad btn-sm">Buy on Amazon →</a>
+          </div>
+        </div>
+        <div class="book-card fade-up">
+          <div class="book-cover">📖 Book Cover</div>
+          <div class="book-info">
+            <h3 class="book-title">Social Change in Modern India — M.N. Srinivas</h3>
+            <p class="book-desc">Classic text on Sanskritization, dominant caste, and social mobility.</p>
+            <a href="#" class="btn btn-grad btn-sm">Buy on Amazon →</a>
+          </div>
+        </div>
+        <div class="book-card fade-up">
+          <div class="book-cover">📖 Book Cover</div>
+          <div class="book-info">
+            <h3 class="book-title">Sociological Theory — George Ritzer</h3>
+            <p class="book-desc">Comprehensive coverage of classical and contemporary sociological theories.</p>
+            <a href="#" class="btn btn-grad btn-sm">Buy on Amazon →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== EBOOKS ===== -->
+  <section class="section" id="ebooks">
+    <div class="container">
+      <div class="section-label">Study Material</div>
+      <h2 class="section-title">eBooks &amp; <span class="grad-text">Notes</span></h2>
+      <p class="section-sub">Curated notes and study material developed from 16+ years of UPSC teaching experience.</p>
+      <div class="ebooks-grid">
+        <div class="ebook-card fade-up">
+          <div class="ebook-cover">eBook Cover</div>
+          <div class="ebook-info">
+            <h3 class="ebook-title">Sociology Optional Notes — Shekhar Dutt</h3>
+            <div class="ebook-price">₹999</div>
+            <p class="ebook-desc">Comprehensive notes covering Paper I &amp; II with answer writing frameworks and thinker maps.</p>
+            <a href="#" class="btn btn-grad btn-sm">Buy Now</a>
+          </div>
+        </div>
+        <div class="ebook-card fade-up">
+          <div class="ebook-cover">eBook Cover</div>
+          <div class="ebook-info">
+            <h3 class="ebook-title">GS Economy Quick Revision Guide</h3>
+            <div class="ebook-price">₹499</div>
+            <p class="ebook-desc">Concise revision notes for GS Economy with diagrams, flowcharts, and previous year analysis.</p>
+            <a href="#" class="btn btn-grad btn-sm">Buy Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== MEDIA ===== -->
+  <section class="section" id="media">
+    <div class="container">
+      <div class="section-label">Press</div>
+      <h2 class="section-title">In the <span class="grad-text">News</span></h2>
+      <p class="section-sub">Featured coverage, interviews, and mentions across publications.</p>
+      <div class="media-grid" id="media-grid">
+        <div class="media-card fade-up" style="grid-column:1/-1;text-align:center;padding:60px 32px;">
+          <p style="color:var(--text3);font-size:0.95rem;">Media mentions coming soon — add them via the <a href="admin.html" style="color:var(--violet2);font-weight:600;">Admin Dashboard</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== YOUTUBE ===== -->
+  <section class="section" id="youtube">
+    <div class="container">
+      <div style="text-align:center;">
+        <div class="section-label" style="justify-content:center;">Free Lectures</div>
+        <h2 class="section-title">Watch Free <span class="grad-text">UPSC Lectures</span></h2>
+        <p class="section-sub" style="margin:0 auto 40px;">Free comprehensive lectures on Sociology Optional, GS Economy, and UPSC Strategy.</p>
+      </div>
+      <div class="youtube-wrap">
+        <iframe width="100%" height="480" src="https://www.youtube.com/embed/videoseries?list=PLu-Me-WBRrV4FqQPIe73EPWr5FQgmatlx" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="yt-labels">
+        <span class="yt-label">Sociology Optional</span>
+        <span class="yt-label">GS Economy</span>
+        <span class="yt-label">UPSC Strategy</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== TWITTER ===== -->
+  <section class="section" id="twitter">
+    <div class="container" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">Feed</div>
+      <h2 class="section-title">Thoughts &amp; <span class="grad-text">Motivation</span></h2>
+      <p class="section-sub" style="margin:0 auto 40px;">Daily insights, UPSC tips, and motivation from Shekhar's Twitter/X feed.</p>
+      <div class="twitter-wrap">
+        <a class="twitter-timeline" data-theme="light" href="https://twitter.com/DuttShekhar">Tweets by DuttShekhar</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== CONSULTATION ===== -->
+  <section class="consult section" id="consult">
+    <div class="consult-blob"></div>
+    <div class="container">
+      <div class="consult-header">
+        <div class="section-label" style="justify-content:center;">1:1 Sessions</div>
+        <h2 class="section-title">Book a Personal <span class="grad-text">Guidance Session</span></h2>
+        <p class="section-sub" style="margin:0 auto 40px;">Get personalised UPSC strategy, Sociology optional guidance, and answer writing feedback directly from Shekhar Sir.</p>
+      </div>
+      <div class="calendly-wrap">
+        <div class="calendly-inline-widget" data-url="https://calendly.com/simplifiedbysd" style="min-width:320px;height:630px;"></div>
+        <script src="https://assets.calendly.com/assets/external/widget.js"></script>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== COLLAB ===== -->
+  <section class="section" id="collab">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 40px;">
+        <div class="section-label" style="justify-content:center;">Work Together</div>
+        <h2 class="section-title">Business <span class="grad-text">Collaboration</span></h2>
+      </div>
+      <div class="collab-card fade-up">
+        <p class="collab-text">For brand partnerships, sponsored content, speaking engagements, or institutional collaborations, reach out directly:</p>
+        <div class="collab-btns">
+          <a href="https://www.instagram.com/simplifiedsd/" target="_blank" rel="noopener" class="btn btn-grad">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            DM on Instagram
+          </a>
+          <a href="https://in.linkedin.com/in/shekhar-dutt-aa71671b" target="_blank" rel="noopener" class="btn btn-glass">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Connect on LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">Shekhar Dutt</div>
+        <ul class="footer-links">
+          <li><a href="https://in.linkedin.com/in/shekhar-dutt-aa71671b" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://twitter.com/DuttShekhar" target="_blank" rel="noopener">Twitter/X</a></li>
+          <li><a href="https://www.instagram.com/simplifiedsd/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.youtube.com/playlist?list=PLu-Me-WBRrV4FqQPIe73EPWr5FQgmatlx" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://sleepyclasses.com" target="_blank" rel="noopener">Sleepy Classes</a></li>
+        </ul>
+        <p class="footer-copy">© 2026 Shekhar Dutt | Sleepy Classes IAS</p>
+        <p class="footer-location">Chandigarh, India</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('open');
+    }));
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ===== CMS DATA LOADER =====
+    (function loadCMSData() {
+      try {
+        const data = JSON.parse(localStorage.getItem('sd_cms_data'));
+        if (!data) return;
+        if (data.hero) {
+          const h = data.hero;
+          if (h.name) {
+            const nameEl = document.querySelector('.hero-name');
+            const grad = nameEl.querySelector('.hero-name-grad');
+            if (grad) grad.textContent = h.name.split(' ')[0];
+            nameEl.lastChild.textContent = '\n' + (h.name.split(' ').slice(1).join(' ') || '');
+          }
+          if (h.tagline) document.querySelector('.hero-tagline').innerHTML = h.tagline;
+          if (h.quote) document.querySelector('.hero-quote').textContent = h.quote;
+          if (h.stats) {
+            const statEls = document.querySelectorAll('.bento-stat');
+            h.stats.forEach((s, i) => {
+              if (statEls[i]) {
+                statEls[i].querySelector('.num').textContent = s.number + '+';
+                statEls[i].querySelector('.lbl').textContent = s.label;
+              }
+            });
+          }
+        }
+        if (data.about) {
+          const paras = document.querySelectorAll('.about-text p');
+          if (data.about.para1 && paras[0]) paras[0].textContent = data.about.para1;
+          if (data.about.para2 && paras[1]) paras[1].textContent = data.about.para2;
+          if (data.about.photo) {
+            const img = document.querySelector('.about-photo img');
+            if (img) img.src = data.about.photo;
+          }
+        }
+        if (data.books && data.books.length) {
+          document.querySelector('.books-grid').innerHTML = data.books.map(b => `
+            <div class="book-card fade-up visible">
+              <div class="book-cover">${b.coverUrl ? '<img src="'+b.coverUrl+'" alt="'+b.title+'" style="width:100%;height:100%;object-fit:cover;">' : '📖 Book Cover'}</div>
+              <div class="book-info">
+                <h3 class="book-title">${b.title}</h3>
+                <p class="book-desc">${b.desc}</p>
+                <a href="${b.link||'#'}" target="_blank" class="btn btn-grad btn-sm">Buy on Amazon →</a>
+              </div>
+            </div>`).join('');
+        }
+        if (data.ebooks && data.ebooks.length) {
+          document.querySelector('.ebooks-grid').innerHTML = data.ebooks.map(e => `
+            <div class="ebook-card fade-up visible">
+              <div class="ebook-cover">${e.coverUrl ? '<img src="'+e.coverUrl+'" alt="'+e.title+'" style="width:100%;height:100%;object-fit:cover;">' : 'eBook Cover'}</div>
+              <div class="ebook-info">
+                <h3 class="ebook-title">${e.title}</h3>
+                <div class="ebook-price">${e.price}</div>
+                <p class="ebook-desc">${e.desc}</p>
+                <a href="${e.link||'#'}" target="_blank" class="btn btn-grad btn-sm">Buy Now</a>
+              </div>
+            </div>`).join('');
+        }
+        if (data.media && data.media.length) {
+          document.getElementById('media-grid').innerHTML = data.media.map(m => `
+            <div class="media-card fade-up visible">
+              <div class="media-source">
+                <div class="media-logo">${m.logo||'LOGO'}</div>
+                <div class="media-source-name">${m.source}</div>
+              </div>
+              <p class="media-quote">"${m.quote}"</p>
+              <a href="${m.link||'#'}" target="_blank" class="media-link">Read Article →</a>
+            </div>`).join('');
+        }
+      } catch(e) { console.log('CMS:', e); }
+    })();
+  </script>
+</body>
+</html>
