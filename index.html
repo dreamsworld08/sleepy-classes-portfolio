@@ -1091,8 +1091,11 @@
         <p class="section-sub" style="margin:0 auto 40px;">Get personalised UPSC strategy, Sociology optional guidance, and answer writing feedback directly from Shekhar Sir.</p>
       </div>
       <div class="calendly-wrap">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/simplifiedbysd" style="min-width:320px;height:630px;"></div>
-        <script src="https://assets.calendly.com/assets/external/widget.js"></script>
+        <div id="calendly-inline-container" style="min-width:320px;height:630px;"></div>
+        <p style="margin-top:14px;color:var(--text2);font-size:0.92rem;text-align:center;">
+          If booking does not load instantly,
+          <a id="calendly-direct-link" href="https://calendly.com/simplifiedbysd" target="_blank" rel="noopener" style="color:var(--violet2);font-weight:700;">open Calendly directly</a>.
+        </p>
       </div>
     </div>
   </section>
@@ -1141,6 +1144,61 @@
   </footer>
 
   <script>
+    const DEFAULT_CALENDLY_URL = 'https://calendly.com/simplifiedbysd';
+
+    function getSafeCalendlyUrl(rawUrl) {
+      const value = (rawUrl || '').trim();
+      if (!value) return DEFAULT_CALENDLY_URL;
+      try {
+        const url = new URL(value);
+        const host = url.hostname.replace(/^www\./, '').toLowerCase();
+        if (host !== 'calendly.com') return DEFAULT_CALENDLY_URL;
+        return `${url.origin}${url.pathname}`.replace(/\/+$/, '');
+      } catch (_) {
+        return DEFAULT_CALENDLY_URL;
+      }
+    }
+
+    function getCalendlyEmbedUrl(baseUrl) {
+      const u = new URL(baseUrl);
+      u.searchParams.set('hide_gdpr_banner', '1');
+      u.searchParams.set('background_color', 'fafaf8');
+      u.searchParams.set('text_color', '111111');
+      u.searchParams.set('primary_color', '6b5ce7');
+      return u.toString();
+    }
+
+    function mountCalendly(baseUrl) {
+      const safeUrl = getSafeCalendlyUrl(baseUrl);
+      const directLink = document.getElementById('calendly-direct-link');
+      const parentElement = document.getElementById('calendly-inline-container');
+      if (directLink) directLink.href = safeUrl;
+      if (!parentElement) return;
+
+      const embedUrl = getCalendlyEmbedUrl(safeUrl);
+      const render = () => {
+        if (!window.Calendly || typeof window.Calendly.initInlineWidget !== 'function') return;
+        parentElement.innerHTML = '';
+        window.Calendly.initInlineWidget({
+          url: embedUrl,
+          parentElement
+        });
+      };
+
+      if (window.Calendly && typeof window.Calendly.initInlineWidget === 'function') {
+        render();
+        return;
+      }
+
+      if (document.getElementById('calendly-widget-script')) return;
+      const script = document.createElement('script');
+      script.id = 'calendly-widget-script';
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      script.onload = render;
+      document.body.appendChild(script);
+    }
+
     // Hamburger
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
@@ -1161,9 +1219,16 @@
 
     // ===== CMS DATA LOADER =====
     (function loadCMSData() {
+      let calendlyUrl = DEFAULT_CALENDLY_URL;
       try {
         const data = JSON.parse(localStorage.getItem('sd_cms_data'));
-        if (!data) return;
+        if (!data) {
+          mountCalendly(calendlyUrl);
+          return;
+        }
+        if (data.settings && data.settings.calendly) {
+          calendlyUrl = data.settings.calendly;
+        }
         if (data.hero) {
           const h = data.hero;
           if (h.name) {
@@ -1228,6 +1293,7 @@
             </div>`).join('');
         }
       } catch(e) { console.log('CMS:', e); }
+      mountCalendly(calendlyUrl);
     })();
   </script>
 </body>
