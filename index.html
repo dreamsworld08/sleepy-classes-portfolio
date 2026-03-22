@@ -1216,13 +1216,17 @@
       document.body.appendChild(script);
     }
 
-    function applyProfilePhoto(photoUrl) {
+    function applyHeroBackgroundImage(photoUrl) {
       if (!photoUrl) return;
       const hero = document.getElementById('hero');
       if (hero) {
         const safePhotoUrl = String(photoUrl).replace(/"/g, '\\"');
         hero.style.setProperty('--hero-image', `url("${safePhotoUrl}")`);
       }
+    }
+
+    function applyProfilePhoto(photoUrl) {
+      if (!photoUrl) return;
       document.querySelectorAll('.about-photo img').forEach((img) => {
         img.style.display = 'block';
         img.src = photoUrl;
@@ -1303,6 +1307,9 @@
         const el = document.querySelector('.hero-quote');
         if (el) el.textContent = decodeEntities(h.quote);
       }
+
+      const heroImage = h.backgroundImage || h.image || h.bgImage || '';
+      if (heroImage) applyHeroBackgroundImage(heroImage);
 
       if (Array.isArray(h.stats) && h.stats.length) {
         const statEls = document.querySelectorAll('.stats-strip .stat-item');
@@ -1433,6 +1440,9 @@
 
         if (data.hero) applyHero(data.hero);
         if (data.about) applyAbout(data.about);
+        if ((!data.hero || !data.hero.backgroundImage) && data.about && data.about.photo) {
+          applyHeroBackgroundImage(data.about.photo);
+        }
         if (data.achievements) renderAchievements(data.achievements);
         if (data.books) renderBooks(data.books);
         if (data.ebooks) renderEbooks(data.ebooks);
