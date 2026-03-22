@@ -85,3 +85,4 @@ Shekhar Dutt — Co-Founder & Faculty
 ---
 
 For updates or issues, contact: subscriptions@sleepyclasses.com
+<--upgrade trigger redeploy Sun Mar 22 11:53:41 IST 2026 -->
