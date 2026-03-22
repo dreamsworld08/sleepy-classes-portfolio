@@ -1,0 +1,108 @@
+{
+  "hero": {
+    "name": "Shekhar Dutt",
+    "tagline": "Co-Founder & Faculty (Sociology & Economy) | Sleepy Classes IAS",
+    "quote": "Engineering taught me how a society is built. Sociology is teaching me how a society is formed.",
+    "stats": [
+      {
+        "number": "1M",
+        "label": "YouTube Subscribers"
+      },
+      {
+        "number": "125M",
+        "label": "Views"
+      },
+      {
+        "number": "200K",
+        "label": "Students"
+      },
+      {
+        "number": "500",
+        "label": "UPSC Ranks"
+      },
+      {
+        "number": "16",
+        "label": "Years Teaching"
+      }
+    ]
+  },
+  "about": {
+    "para1": "Shekhar Dutt is Co-Founder of Sleepy Classes IAS — one of India's leading online UPSC coaching platforms. With a BE (Mechanical Engineering) from PEC Chandigarh and MBA (Finance) from Panjab University, he is a self-taught Sociology expert with 16+ years of teaching experience.",
+    "para2": "He teaches Sociology Optional and GS Economy, and has guided students to AIR 2, AIR 5, AIR 13 and multiple single-digit UPSC ranks.",
+    "photo": "profile-photo.jpg"
+  },
+  "achievements": [
+    {
+      "value": "AIR 2, 5, 13",
+      "label": "Top single-digit UPSC ranks produced"
+    },
+    {
+      "value": "1M+",
+      "label": "YouTube Subscribers"
+    },
+    {
+      "value": "100+",
+      "label": "Courses on Sleepy Classes"
+    },
+    {
+      "value": "8.8M+",
+      "label": "Watch Hours on YouTube"
+    },
+    {
+      "value": "200K+",
+      "label": "Students Enrolled"
+    }
+  ],
+  "books": [
+    {
+      "title": "Sociology: Themes and Perspectives",
+      "desc": "A must-read foundational text for understanding sociological theories.",
+      "link": "#",
+      "coverUrl": ""
+    },
+    {
+      "title": "Indian Society — Nadeem Hasnain",
+      "desc": "Essential for Paper II — covers caste, tribe, kinship, and social change.",
+      "link": "#",
+      "coverUrl": ""
+    },
+    {
+      "title": "Social Change in Modern India — M.N. Srinivas",
+      "desc": "Classic text on Sanskritization, dominant caste, and social mobility.",
+      "link": "#",
+      "coverUrl": ""
+    },
+    {
+      "title": "Sociological Theory — George Ritzer",
+      "desc": "Comprehensive coverage of classical and contemporary sociological theories.",
+      "link": "#",
+      "coverUrl": ""
+    }
+  ],
+  "ebooks": [
+    {
+      "title": "Sociology Optional Notes — Shekhar Dutt",
+      "price": "₹999",
+      "desc": "Comprehensive notes covering Paper I & II with answer writing frameworks.",
+      "link": "#",
+      "coverUrl": ""
+    },
+    {
+      "title": "GS Economy Quick Revision Guide",
+      "price": "₹499",
+      "desc": "Concise revision notes for GS Economy with diagrams and flowcharts.",
+      "link": "#",
+      "coverUrl": ""
+    }
+  ],
+  "media": [],
+  "pages": [],
+  "settings": {
+    "instagram": "https://www.instagram.com/simplifiedsd/",
+    "linkedin": "https://in.linkedin.com/in/shekhar-dutt-aa71671b",
+    "twitter": "https://twitter.com/DuttShekhar",
+    "youtube": "https://www.youtube.com/playlist?list=PLu-Me-WBRrV4FqQPIe73EPWr5FQgmatlx",
+    "calendly": "https://calendly.com/simplifiedbysd",
+    "website": "https://sleepyclasses.com"
+  }
+}

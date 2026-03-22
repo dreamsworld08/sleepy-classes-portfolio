@@ -522,6 +522,22 @@
           <button class="btn btn-primary" style="margin-top:12px;" onclick="saveSettings()">Save Settings</button>
         </div>
         <div class="card">
+          <div class="card-title">GitHub CMS Sync</div>
+          <p style="font-size:0.88rem;color:var(--grey-text);margin-bottom:16px;">Publish CMS data to <code>cms-data.json</code> in this GitHub repo so homepage updates are visible across browsers/devices.</p>
+          <div class="card-grid">
+            <div class="form-group"><label>Owner</label><input type="text" id="ghOwner" placeholder="dreamsworld08"></div>
+            <div class="form-group"><label>Repository</label><input type="text" id="ghRepo" placeholder="sleepy-classes-portfolio"></div>
+            <div class="form-group"><label>Branch</label><input type="text" id="ghBranch" placeholder="main"></div>
+            <div class="form-group"><label>Data File Path</label><input type="text" id="ghPath" placeholder="cms-data.json"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>GitHub Fine-Grained Token (Contents: Read/Write)</label><input type="password" id="ghToken" placeholder="github_pat_..."></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+            <button class="btn btn-outline" onclick="saveGithubConfig()">Save GitHub Config</button>
+            <button class="btn btn-outline" onclick="pullFromGitHub()">Pull from GitHub</button>
+            <button class="btn btn-primary" onclick="publishToGitHub()">Publish to GitHub</button>
+          </div>
+        </div>
+        <div class="card">
           <div class="card-title">Export / Import Data</div>
           <p style="font-size:0.88rem;color:var(--grey-text);margin-bottom:16px;">Download all CMS data as JSON or import a backup.</p>
           <div style="display:flex;gap:12px;">
@@ -546,6 +562,7 @@
     // ===== DATA STORE =====
     const STORAGE_KEY = 'sd_cms_data';
     const CRED_KEY = 'sd_cms_creds';
+    const GITHUB_SYNC_KEY = 'sd_cms_github_sync';
 
     function getDefaults() {
       return {
@@ -1140,6 +1157,137 @@
       toast('Settings saved!');
     }
 
+    // ===== GITHUB SYNC =====
+    function getDefaultGithubConfig() {
+      return {
+        owner: 'dreamsworld08',
+        repo: 'sleepy-classes-portfolio',
+        branch: 'main',
+        path: 'cms-data.json',
+        token: ''
+      };
+    }
+
+    function getGithubConfig() {
+      try {
+        return { ...getDefaultGithubConfig(), ...(JSON.parse(localStorage.getItem(GITHUB_SYNC_KEY)) || {}) };
+      } catch {
+        return getDefaultGithubConfig();
+      }
+    }
+
+    function readGithubConfigFromForm() {
+      return {
+        owner: document.getElementById('ghOwner').value.trim(),
+        repo: document.getElementById('ghRepo').value.trim(),
+        branch: document.getElementById('ghBranch').value.trim() || 'main',
+        path: document.getElementById('ghPath').value.trim() || 'cms-data.json',
+        token: document.getElementById('ghToken').value.trim()
+      };
+    }
+
+    function fillGithubConfigForm(cfg) {
+      const c = cfg || getDefaultGithubConfig();
+      document.getElementById('ghOwner').value = c.owner || '';
+      document.getElementById('ghRepo').value = c.repo || '';
+      document.getElementById('ghBranch').value = c.branch || 'main';
+      document.getElementById('ghPath').value = c.path || 'cms-data.json';
+      document.getElementById('ghToken').value = c.token || '';
+    }
+
+    function saveGithubConfig() {
+      const cfg = readGithubConfigFromForm();
+      localStorage.setItem(GITHUB_SYNC_KEY, JSON.stringify(cfg));
+      toast('GitHub sync config saved');
+    }
+
+    function encodePathForGitHub(path) {
+      return path.split('/').map(encodeURIComponent).join('/');
+    }
+
+    function encodeBase64Utf8(text) {
+      return btoa(unescape(encodeURIComponent(text)));
+    }
+
+    function decodeBase64Utf8(text) {
+      return decodeURIComponent(escape(atob((text || '').replace(/\n/g, ''))));
+    }
+
+    function getGithubApiBase(cfg) {
+      return `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${encodePathForGitHub(cfg.path)}`;
+    }
+
+    async function fetchGitHubFile(cfg) {
+      const headers = {
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      };
+      if (cfg.token) headers['Authorization'] = `Bearer ${cfg.token}`;
+      const url = `${getGithubApiBase(cfg)}?ref=${encodeURIComponent(cfg.branch)}`;
+      const response = await fetch(url, { headers });
+      if (response.status === 404) return null;
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.message || `GitHub read failed (${response.status})`);
+      return body;
+    }
+
+    async function pullFromGitHub() {
+      try {
+        const cfg = readGithubConfigFromForm();
+        if (!cfg.owner || !cfg.repo || !cfg.path) return toast('Owner, repo and path are required', true);
+        const file = await fetchGitHubFile(cfg);
+        if (!file) return toast('GitHub file not found on selected branch/path', true);
+        const parsed = JSON.parse(decodeBase64Utf8(file.content));
+        DATA = parsed;
+        saveData(DATA);
+        saveGithubConfig();
+        loadDashboard();
+        toast('Pulled CMS data from GitHub');
+      } catch (err) {
+        toast(err.message || 'GitHub pull failed', true);
+      }
+    }
+
+    async function publishToGitHub() {
+      try {
+        const cfg = readGithubConfigFromForm();
+        if (!cfg.owner || !cfg.repo || !cfg.path || !cfg.token) {
+          return toast('Owner, repo, path and token are required', true);
+        }
+
+        const headers = {
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          'Authorization': `Bearer ${cfg.token}`,
+          'Content-Type': 'application/json'
+        };
+
+        let sha = null;
+        const current = await fetchGitHubFile(cfg);
+        if (current && current.sha) sha = current.sha;
+
+        const payload = {
+          message: `chore: update cms data (${new Date().toISOString()})`,
+          content: encodeBase64Utf8(JSON.stringify(DATA, null, 2)),
+          branch: cfg.branch
+        };
+        if (sha) payload.sha = sha;
+
+        const response = await fetch(getGithubApiBase(cfg), {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify(payload)
+        });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(body.message || `GitHub publish failed (${response.status})`);
+
+        saveGithubConfig();
+        toast('Published to GitHub. Homepage will update after Pages deploy.');
+      } catch (err) {
+        toast(err.message || 'GitHub publish failed', true);
+      }
+    }
+
     // ===== IMPORT / EXPORT =====
     function exportData() {
       const blob = new Blob([JSON.stringify(DATA, null, 2)], { type: 'application/json' });
@@ -1178,6 +1326,7 @@
       renderMedia();
       renderPages();
       loadSettings();
+      fillGithubConfigForm(getGithubConfig());
     }
 
     // Init
