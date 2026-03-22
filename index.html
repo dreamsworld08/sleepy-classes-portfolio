@@ -1199,6 +1199,16 @@
       document.body.appendChild(script);
     }
 
+    function applyProfilePhoto(photoUrl) {
+      if (!photoUrl) return;
+      document.querySelectorAll('.hero-photo-frame img, .about-photo img').forEach((img) => {
+        img.style.display = 'block';
+        img.src = photoUrl;
+        const fallback = img.nextElementSibling;
+        if (fallback) fallback.style.display = 'none';
+      });
+    }
+
     // Hamburger
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
@@ -1253,10 +1263,7 @@
           const paras = document.querySelectorAll('.about-text p');
           if (data.about.para1 && paras[0]) paras[0].textContent = data.about.para1;
           if (data.about.para2 && paras[1]) paras[1].textContent = data.about.para2;
-          if (data.about.photo) {
-            const img = document.querySelector('.about-photo img');
-            if (img) img.src = data.about.photo;
-          }
+          if (data.about.photo) applyProfilePhoto(data.about.photo);
         }
         if (data.books && data.books.length) {
           document.querySelector('.books-grid').innerHTML = data.books.map(b => `
