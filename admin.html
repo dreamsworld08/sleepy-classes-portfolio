@@ -539,7 +539,7 @@
         </div>
         <div class="card">
           <div class="card-title">GitHub CMS Sync</div>
-          <p style="font-size:0.88rem;color:var(--grey-text);margin-bottom:16px;">Publish CMS data to <code>cms-data.json</code> in this GitHub repo so homepage updates are visible across browsers/devices.</p>
+          <p style="font-size:0.88rem;color:var(--grey-text);margin-bottom:16px;">Publish CMS data to <code>cms-data.json</code> in this GitHub repo so homepage updates are visible across browsers/devices. If hero/about images are uploaded from this admin, they are also pushed as files under <code>assets/</code>.</p>
           <div class="card-grid">
             <div class="form-group"><label>Owner</label><input type="text" id="ghOwner" placeholder="dreamsworld08"></div>
             <div class="form-group"><label>Repository</label><input type="text" id="ghRepo" placeholder="sleepy-classes-portfolio"></div>
@@ -586,7 +586,7 @@
           name: 'Shekhar Dutt',
           tagline: 'Co-Founder &amp; Faculty (Sociology &amp; Economy) | Sleepy Classes IAS',
           quote: 'Engineering taught me how a society is built. Sociology is teaching me how a society is formed.',
-          backgroundImage: 'profile-photo.jpg',
+          backgroundImage: 'assets/hero-default.svg',
           stats: [
             { number: '1M', label: 'YouTube Subscribers' },
             { number: '125M', label: 'Views' },
@@ -1297,22 +1297,78 @@
       return decodeURIComponent(escape(atob((text || '').replace(/\n/g, ''))));
     }
 
-    function getGithubApiBase(cfg) {
-      return `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${encodePathForGitHub(cfg.path)}`;
+    function getGithubApiBase(cfg, pathOverride) {
+      const path = pathOverride || cfg.path;
+      return `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${encodePathForGitHub(path)}`;
     }
 
-    async function fetchGitHubFile(cfg) {
+    function parseImageDataUrl(dataUrl) {
+      const input = String(dataUrl || '').trim();
+      const match = input.match(/^data:(image\/(?:png|jpeg|jpg|webp));base64,([A-Za-z0-9+/=]+)$/i);
+      if (!match) return null;
+      const mime = match[1].toLowerCase().replace('jpg', 'jpeg');
+      const ext = mime.split('/')[1];
+      return { mime, ext, base64: match[2] };
+    }
+
+    function cloneData(data) {
+      return JSON.parse(JSON.stringify(data || {}));
+    }
+
+    async function fetchGitHubFile(cfg, pathOverride) {
       const headers = {
         'Accept': 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28'
       };
       if (cfg.token) headers['Authorization'] = `Bearer ${cfg.token}`;
-      const url = `${getGithubApiBase(cfg)}?ref=${encodeURIComponent(cfg.branch)}`;
+      const url = `${getGithubApiBase(cfg, pathOverride)}?ref=${encodeURIComponent(cfg.branch)}`;
       const response = await fetch(url, { headers });
       if (response.status === 404) return null;
       const body = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(body.message || `GitHub read failed (${response.status})`);
       return body;
+    }
+
+    async function putGitHubFile(cfg, path, contentBase64, message) {
+      const headers = {
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Authorization': `Bearer ${cfg.token}`,
+        'Content-Type': 'application/json'
+      };
+      let sha = null;
+      const current = await fetchGitHubFile(cfg, path);
+      if (current && current.sha) sha = current.sha;
+
+      const payload = {
+        message,
+        content: contentBase64,
+        branch: cfg.branch
+      };
+      if (sha) payload.sha = sha;
+
+      const response = await fetch(getGithubApiBase(cfg, path), {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(payload)
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.message || `GitHub publish failed (${response.status})`);
+      return body;
+    }
+
+    async function uploadInlineImageIfNeeded(cfg, value, prefix) {
+      const parsed = parseImageDataUrl(value);
+      if (!parsed) return value;
+      const stamp = new Date().toISOString().replace(/[^\d]/g, '').slice(0, 14);
+      const imagePath = `assets/${prefix}-${stamp}.${parsed.ext}`;
+      await putGitHubFile(
+        cfg,
+        imagePath,
+        parsed.base64,
+        `chore: upload ${prefix} image (${stamp})`
+      );
+      return imagePath;
     }
 
     async function pullFromGitHub() {
@@ -1338,33 +1394,30 @@
         if (!cfg.owner || !cfg.repo || !cfg.path || !cfg.token) {
           return toast('Owner, repo, path and token are required', true);
         }
+        const dataToPublish = cloneData(DATA);
+        if (!dataToPublish.hero) dataToPublish.hero = {};
+        if (!dataToPublish.about) dataToPublish.about = {};
 
-        const headers = {
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-          'Authorization': `Bearer ${cfg.token}`,
-          'Content-Type': 'application/json'
-        };
+        dataToPublish.hero.backgroundImage = await uploadInlineImageIfNeeded(
+          cfg,
+          dataToPublish.hero.backgroundImage,
+          'hero-bg'
+        );
+        dataToPublish.about.photo = await uploadInlineImageIfNeeded(
+          cfg,
+          dataToPublish.about.photo,
+          'about-photo'
+        );
 
-        let sha = null;
-        const current = await fetchGitHubFile(cfg);
-        if (current && current.sha) sha = current.sha;
+        await putGitHubFile(
+          cfg,
+          cfg.path,
+          encodeBase64Utf8(JSON.stringify(dataToPublish, null, 2)),
+          `chore: update cms data (${new Date().toISOString()})`
+        );
 
-        const payload = {
-          message: `chore: update cms data (${new Date().toISOString()})`,
-          content: encodeBase64Utf8(JSON.stringify(DATA, null, 2)),
-          branch: cfg.branch
-        };
-        if (sha) payload.sha = sha;
-
-        const response = await fetch(getGithubApiBase(cfg), {
-          method: 'PUT',
-          headers,
-          body: JSON.stringify(payload)
-        });
-        const body = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(body.message || `GitHub publish failed (${response.status})`);
-
+        DATA = dataToPublish;
+        saveData(DATA);
         saveGithubConfig();
         toast('Published to GitHub. Homepage will update after Pages deploy.');
       } catch (err) {
