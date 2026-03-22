@@ -30,6 +30,12 @@
   "about": {
     "para1": "Shekhar Dutt is Co-Founder of Sleepy Classes IAS — one of India's leading online UPSC coaching platforms. With a BE (Mechanical Engineering) from PEC Chandigarh and MBA (Finance) from Panjab University, he is a self-taught Sociology expert with 16+ years of teaching experience.",
     "para2": "He teaches Sociology Optional and GS Economy, and has guided students to AIR 2, AIR 5, AIR 13 and multiple single-digit UPSC ranks.",
+    "credTags": [
+      "BE (Mech.) — PEC Chandigarh",
+      "MBA (Finance) — Panjab University",
+      "Sociology Optional Expert",
+      "GS Economy Faculty"
+    ],
     "photo": "profile-photo.jpg"
   },
   "achievements": [

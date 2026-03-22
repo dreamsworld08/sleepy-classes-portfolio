@@ -421,6 +421,10 @@
             <textarea id="aboutP2" rows="3"></textarea>
           </div>
           <div class="form-group">
+            <label>Credential Pills (one per line)</label>
+            <textarea id="aboutCredTags" rows="4" placeholder="BE (Mech.) — PEC Chandigarh&#10;MBA (Finance) — Panjab University&#10;Sociology Optional Expert&#10;GS Economy Faculty"></textarea>
+          </div>
+          <div class="form-group">
             <label>Profile Photo</label>
             <div style="display:flex; gap:12px; margin-bottom:12px;">
               <div style="flex:1;">
@@ -610,6 +614,12 @@
         about: {
           para1: "Shekhar Dutt is Co-Founder of Sleepy Classes IAS — one of India's leading online UPSC coaching platforms. With a BE (Mechanical Engineering) from PEC Chandigarh and MBA (Finance) from Panjab University, he is a self-taught Sociology expert with 16+ years of teaching experience.",
           para2: 'He teaches Sociology Optional and GS Economy, and has guided students to AIR 2, AIR 5, AIR 13 and multiple single-digit UPSC ranks.',
+          credTags: [
+            'BE (Mech.) — PEC Chandigarh',
+            'MBA (Finance) — Panjab University',
+            'Sociology Optional Expert',
+            'GS Economy Faculty'
+          ],
           photo: 'profile-photo.jpg'
         },
         achievements: [
@@ -877,6 +887,9 @@
     function loadAbout() {
       document.getElementById('aboutP1').value = DATA.about.para1;
       document.getElementById('aboutP2').value = DATA.about.para2;
+      const defaultTags = (getDefaults().about && getDefaults().about.credTags) || [];
+      const tags = Array.isArray(DATA.about.credTags) ? DATA.about.credTags : defaultTags;
+      document.getElementById('aboutCredTags').value = tags.join('\n');
       document.getElementById('aboutPhoto').value = DATA.about.photo || '';
 
       // Show preview if photo exists
@@ -919,6 +932,10 @@
     function saveAbout() {
       DATA.about.para1 = document.getElementById('aboutP1').value;
       DATA.about.para2 = document.getElementById('aboutP2').value;
+      DATA.about.credTags = document.getElementById('aboutCredTags').value
+        .split('\n')
+        .map(v => v.trim())
+        .filter(Boolean);
       DATA.about.photo = document.getElementById('aboutPhoto').value;
       saveData(DATA);
       toast('About section saved!');
