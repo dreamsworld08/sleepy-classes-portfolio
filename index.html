@@ -1563,7 +1563,14 @@
         if (typeof localStorage === 'undefined') return null;
         const localData = localStorage.getItem('sd_cms_data');
         if (!localData) return null;
-        return JSON.parse(localData);
+        const parsed = JSON.parse(localData);
+        if (parsed && parsed.about && parsed.about.photo === 'profile-photo.jpg') {
+          parsed.about.photo = DEFAULT_ABOUT_IMAGE;
+        }
+        if (parsed && parsed.hero && !parsed.hero.backgroundImage) {
+          parsed.hero.backgroundImage = DEFAULT_HERO_IMAGE;
+        }
+        return parsed;
       } catch (_) {
         return null;
       }
@@ -1591,8 +1598,9 @@
     (async function loadCMSData() {
       let calendlyUrl = DEFAULT_CALENDLY_URL;
       try {
-        let data = readLocalCmsData();
-        if (!data) data = await fetchRemoteCmsData();
+        const remoteData = await fetchRemoteCmsData();
+        const localData = readLocalCmsData();
+        const data = remoteData || localData;
         if (!data) {
           mountCalendly(calendlyUrl);
           return;
