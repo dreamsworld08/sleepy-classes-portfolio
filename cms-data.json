@@ -36,7 +36,7 @@
       "Sociology Optional Expert",
       "GS Economy Faculty"
     ],
-    "photo": "profile-photo.jpg"
+    "photo": "assets/about-default.svg"
   },
   "achievements": [
     {
@@ -103,6 +103,7 @@
     }
   ],
   "media": [],
+  "mediaCoverage": [],
   "sectionHeadings": {
     "aboutLabel": "About",
     "aboutTitle": "The Story<br>Behind the <span class=\"grad-text\">Educator</span>",
@@ -118,6 +119,9 @@
     "mediaLabel": "Press",
     "mediaTitle": "In the <span class=\"grad-text\">News</span>",
     "mediaSub": "Featured coverage, interviews, and mentions across publications.",
+    "coverageLabel": "Media Coverage",
+    "coverageTitle": "Featured <span class=\"grad-text\">Coverage</span>",
+    "coverageSub": "Articles, interviews, and podcast features where Shekhar's work and insights are highlighted.",
     "youtubeLabel": "Free Lectures",
     "youtubeTitle": "Watch Free <span class=\"grad-text\">UPSC Lectures</span>",
     "youtubeSub": "Free comprehensive lectures on Sociology Optional, GS Economy, and UPSC Strategy.",

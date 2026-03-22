@@ -486,12 +486,23 @@
       <div class="panel" id="panel-media">
         <div class="page-header">
           <h2>Media Mentions</h2>
-          <button class="btn btn-primary btn-sm" onclick="openMediaModal()">+ Add Media</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" onclick="openCoverageModal()">+ Add Coverage Link</button>
+            <button class="btn btn-primary btn-sm" onclick="openMediaModal()">+ Add Media</button>
+          </div>
         </div>
         <div class="card">
+          <div class="card-title">Quotes / Mention Highlights</div>
           <table class="item-table">
             <thead><tr><th>Source</th><th>Quote</th><th>Link</th><th>Actions</th></tr></thead>
             <tbody id="mediaTable"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-title">Media Coverage Resources</div>
+          <table class="item-table">
+            <thead><tr><th>Title</th><th>Source</th><th>Date</th><th>Link</th><th>Actions</th></tr></thead>
+            <tbody id="mediaCoverageTable"></tbody>
           </table>
         </div>
       </div>
@@ -620,7 +631,7 @@
             'Sociology Optional Expert',
             'GS Economy Faculty'
           ],
-          photo: 'profile-photo.jpg'
+          photo: 'assets/about-default.svg'
         },
         achievements: [
           { value: 'AIR 2, 5, 13', label: 'Top single-digit UPSC ranks produced' },
@@ -640,6 +651,7 @@
           { title: 'GS Economy Quick Revision Guide', price: '₹499', desc: 'Concise revision notes for GS Economy with diagrams and flowcharts.', link: '#', coverUrl: '' }
         ],
         media: [],
+        mediaCoverage: [],
         sectionHeadings: {
           aboutLabel: 'About',
           aboutTitle: 'The Story<br>Behind the <span class="grad-text">Educator</span>',
@@ -659,6 +671,10 @@
           mediaLabel: 'Press',
           mediaTitle: 'In the <span class="grad-text">News</span>',
           mediaSub: 'Featured coverage, interviews, and mentions across publications.',
+
+          coverageLabel: 'Media Coverage',
+          coverageTitle: 'Featured <span class="grad-text">Coverage</span>',
+          coverageSub: 'Articles, interviews, and podcast features where Shekhar\'s work and insights are highlighted.',
 
           youtubeLabel: 'Free Lectures',
           youtubeTitle: 'Watch Free <span class="grad-text">UPSC Lectures</span>',
@@ -698,6 +714,23 @@
     }
 
     let DATA = loadData();
+
+    function ensureDataShape() {
+      const defaults = getDefaults();
+      if (!DATA || typeof DATA !== 'object') DATA = cloneData(defaults);
+
+      if (!Array.isArray(DATA.achievements)) DATA.achievements = [];
+      if (!Array.isArray(DATA.books)) DATA.books = [];
+      if (!Array.isArray(DATA.ebooks)) DATA.ebooks = [];
+      if (!Array.isArray(DATA.media)) DATA.media = [];
+      if (!Array.isArray(DATA.mediaCoverage)) DATA.mediaCoverage = [];
+      if (!Array.isArray(DATA.pages)) DATA.pages = [];
+
+      DATA.hero = { ...(defaults.hero || {}), ...(DATA.hero || {}) };
+      DATA.about = { ...(defaults.about || {}), ...(DATA.about || {}) };
+      DATA.settings = { ...(defaults.settings || {}), ...(DATA.settings || {}) };
+      DATA.sectionHeadings = { ...(defaults.sectionHeadings || {}), ...(DATA.sectionHeadings || {}) };
+    }
 
     // ===== AUTH =====
     function getCredentials() {
@@ -784,6 +817,7 @@
         <div class="stat-card"><div class="num">${d.books.length}</div><div class="lbl">Books</div></div>
         <div class="stat-card"><div class="num">${d.ebooks.length}</div><div class="lbl">eBooks</div></div>
         <div class="stat-card"><div class="num">${d.media.length}</div><div class="lbl">Media Mentions</div></div>
+        <div class="stat-card"><div class="num">${(d.mediaCoverage || []).length}</div><div class="lbl">Coverage Links</div></div>
         <div class="stat-card"><div class="num">${d.achievements.length}</div><div class="lbl">Achievements</div></div>
         <div class="stat-card"><div class="num">${(d.pages||[]).length}</div><div class="lbl">Custom Pages</div></div>
       `;
@@ -1083,14 +1117,15 @@
     // ===== MEDIA =====
     function renderMedia() {
       const tb = document.getElementById('mediaTable');
-      if (!DATA.media.length) {
+      const items = Array.isArray(DATA.media) ? DATA.media : [];
+      if (!items.length) {
         tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--grey-text);">No media mentions yet. Click "+ Add Media" to add one.</td></tr>';
         return;
       }
-      tb.innerHTML = DATA.media.map((m, i) => `
+      tb.innerHTML = items.map((m, i) => `
         <tr>
           <td><strong>${m.source}</strong></td>
-          <td style="max-width:250px;color:var(--grey-text);font-size:0.84rem;font-style:italic;">"${m.quote.substring(0, 80)}..."</td>
+          <td style="max-width:250px;color:var(--grey-text);font-size:0.84rem;font-style:italic;">"${String(m.quote || '').substring(0, 80)}..."</td>
           <td><a href="${m.link}" target="_blank" style="color:var(--navy);font-size:0.84rem;">Link</a></td>
           <td class="actions">
             <button class="btn btn-outline btn-sm" onclick="editMedia(${i})">Edit</button>
@@ -1136,6 +1171,74 @@
       toast('Media mention saved!');
     }
 
+    function renderMediaCoverageAdmin() {
+      const tb = document.getElementById('mediaCoverageTable');
+      if (!tb) return;
+      const items = Array.isArray(DATA.mediaCoverage) ? DATA.mediaCoverage : [];
+      if (!items.length) {
+        tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--grey-text);">No coverage resources yet. Click "+ Add Coverage Link" to add one.</td></tr>';
+        return;
+      }
+      tb.innerHTML = items.map((item, i) => `
+        <tr>
+          <td><strong>${item.title || ''}</strong></td>
+          <td style="max-width:180px;color:var(--grey-text);font-size:0.84rem;">${item.source || ''}</td>
+          <td style="color:var(--grey-text);font-size:0.84rem;">${item.date || ''}</td>
+          <td><a href="${item.link || '#'}" target="_blank" style="color:var(--navy);font-size:0.84rem;">Open</a></td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" onclick="editCoverage(${i})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCoverage(${i})">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openCoverageModal(idx) {
+      const item = idx !== undefined
+        ? DATA.mediaCoverage[idx]
+        : { title: '', source: '', date: '', link: '', type: 'Media', cta: 'Open Resource' };
+      const isEdit = idx !== undefined;
+      openModal(`
+        <h3>${isEdit ? 'Edit' : 'Add'} Coverage Resource</h3>
+        <div class="form-group"><label>Title / Headline</label><input type="text" id="cvTitle" value="${item.title || ''}"></div>
+        <div class="form-group"><label>Source / Publication</label><input type="text" id="cvSource" value="${item.source || ''}"></div>
+        <div class="form-group"><label>Date (optional)</label><input type="text" id="cvDate" value="${item.date || ''}" placeholder="e.g. Jan 2026"></div>
+        <div class="form-group"><label>Type Label (optional)</label><input type="text" id="cvType" value="${item.type || 'Media'}" placeholder="Media / Podcast / Interview"></div>
+        <div class="form-group"><label>CTA Label (optional)</label><input type="text" id="cvCta" value="${item.cta || 'Open Resource'}" placeholder="Open Resource"></div>
+        <div class="form-group"><label>Link</label><input type="url" id="cvLink" value="${item.link || ''}"></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveCoverage(${isEdit ? idx : -1})">Save</button>
+        </div>
+      `);
+    }
+
+    function editCoverage(i) { openCoverageModal(i); }
+
+    function deleteCoverage(i) {
+      DATA.mediaCoverage.splice(i, 1);
+      saveData(DATA);
+      renderMediaCoverageAdmin();
+      toast('Coverage resource deleted');
+    }
+
+    function saveCoverage(idx) {
+      const item = {
+        title: document.getElementById('cvTitle').value,
+        source: document.getElementById('cvSource').value,
+        date: document.getElementById('cvDate').value,
+        type: document.getElementById('cvType').value,
+        cta: document.getElementById('cvCta').value,
+        link: document.getElementById('cvLink').value
+      };
+      if (idx === -1) DATA.mediaCoverage.push(item);
+      else DATA.mediaCoverage[idx] = item;
+      saveData(DATA);
+      renderMediaCoverageAdmin();
+      closeModal();
+      toast('Coverage resource saved!');
+    }
+
     // ===== SECTION HEADINGS =====
     function getSectionHeadingMeta() {
       return [
@@ -1144,6 +1247,7 @@
         { key: 'books', title: 'Books', hasSub: true },
         { key: 'ebooks', title: 'eBooks', hasSub: true },
         { key: 'media', title: 'Media', hasSub: true },
+        { key: 'coverage', title: 'Media Coverage', hasSub: true },
         { key: 'youtube', title: 'YouTube', hasSub: true },
         { key: 'twitter', title: 'Twitter / X', hasSub: true },
         { key: 'consult', title: 'Consultation', hasSub: true },
@@ -1571,6 +1675,7 @@
     // ===== LOAD DASHBOARD =====
     function loadDashboard() {
       DATA = loadData();
+      ensureDataShape();
       renderOverview();
       loadHero();
       loadAbout();
@@ -1578,6 +1683,7 @@
       renderBooks();
       renderEbooks();
       renderMedia();
+      renderMediaCoverageAdmin();
       loadSectionHeadings();
       renderPages();
       loadSettings();

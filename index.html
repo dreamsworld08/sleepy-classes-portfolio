@@ -609,6 +609,22 @@
     .media-quote { font-style: italic; font-size: 0.9rem; color: var(--text2); line-height: 1.7; margin-bottom: 16px; padding-left: 16px; border-left: 2px solid var(--violet); }
     .media-link { font-size: 0.82rem; font-weight: 700; color: var(--violet2); display: inline-flex; align-items: center; gap: 6px; transition: var(--t); }
     .media-link:hover { color: var(--pink); gap: 10px; }
+    .coverage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .coverage-card {
+      background: linear-gradient(180deg, rgba(124,111,255,0.08), rgba(255,255,255,0.02));
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 210px;
+      transition: var(--t);
+    }
+    .coverage-card:hover { transform: translateY(-4px); border-color: rgba(124,111,255,0.35); box-shadow: var(--glow-v); }
+    .coverage-kicker { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); font-weight: 700; }
+    .coverage-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1rem; color: var(--text); line-height: 1.45; }
+    .coverage-meta { font-size: 0.8rem; color: var(--text3); margin-top: auto; }
 
     /* ===== YOUTUBE ===== */
     .youtube-wrap {
@@ -804,6 +820,7 @@
         <li><a href="#achievements">Results</a></li>
         <li><a href="#books">Books</a></li>
         <li><a href="#ebooks">eBooks</a></li>
+        <li><a href="#media-coverage">Media</a></li>
         <li><a href="#youtube">YouTube</a></li>
         <li><a href="#twitter">Twitter</a></li>
         <li><a href="#collab">Collab</a></li>
@@ -868,12 +885,12 @@
       <div class="about-grid">
         <div class="about-photo-wrap fade-up">
           <div class="about-photo">
-            <img src="profile-photo.jpg" alt="Shekhar Dutt"
+            <img src="assets/about-default.svg" alt="Shekhar Dutt"
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
               style="width:100%;height:100%;object-fit:cover;object-position:center top;">
             <div class="about-photo-placeholder" style="display:none;">
               <div class="photo-initials">SD</div>
-              <div class="photo-hint">Place profile-photo.jpg<br>alongside index.html</div>
+              <div class="photo-hint">Upload profile photo<br>from Admin panel</div>
             </div>
           </div>
           <div class="about-float-tag">
@@ -1034,6 +1051,22 @@
 
   <div class="section-divider"></div>
 
+  <!-- ===== MEDIA COVERAGE ===== -->
+  <section class="section" id="media-coverage">
+    <div class="container">
+      <div class="section-label" id="coverageLabel">Media Coverage</div>
+      <h2 class="section-title" id="coverageTitle">Featured <span class="grad-text">Coverage</span></h2>
+      <p class="section-sub" id="coverageSub">Articles, interviews, and podcast features where Shekhar's work and insights are highlighted.</p>
+      <div class="coverage-grid" id="coverage-grid">
+        <div class="media-card fade-up" style="grid-column:1/-1;text-align:center;padding:50px 32px;">
+          <p style="color:var(--text3);font-size:0.95rem;">Coverage resources coming soon — add them via the <a href="admin.html" style="color:var(--violet2);font-weight:600;">Admin Dashboard</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
   <!-- ===== YOUTUBE ===== -->
   <section class="section" id="youtube">
     <div class="container">
@@ -1135,6 +1168,8 @@
   <script>
     const DEFAULT_CALENDLY_URL = 'https://calendly.com/simplifiedbysd';
     const DEFAULT_YOUTUBE_EMBED = 'https://www.youtube.com/embed/videoseries?list=PLu-Me-WBRrV4FqQPIe73EPWr5FQgmatlx';
+    const DEFAULT_HERO_IMAGE = 'assets/hero-default.svg';
+    const DEFAULT_ABOUT_IMAGE = 'assets/about-default.svg';
 
     function decodeEntities(text) {
       const node = document.createElement('textarea');
@@ -1216,22 +1251,53 @@
       document.body.appendChild(script);
     }
 
+    function normalizeImagePath(rawPath, fallback) {
+      const value = String(rawPath || '').trim();
+      if (!value) return fallback;
+      if (/^data:image\//i.test(value) || /^blob:/i.test(value)) return value;
+      if (/^https?:\/\//i.test(value)) return sanitizeHttpUrl(value, fallback);
+      if (value.startsWith('//')) return fallback;
+      return value.replace(/^\.\//, '');
+    }
+
     function applyHeroBackgroundImage(photoUrl) {
-      if (!photoUrl) return;
+      const safeImage = normalizeImagePath(photoUrl, DEFAULT_HERO_IMAGE);
       const hero = document.getElementById('hero');
-      if (hero) {
-        const safePhotoUrl = String(photoUrl).replace(/"/g, '\\"');
+      if (!hero) return;
+
+      const setHeroImage = (src) => {
+        const safePhotoUrl = String(src).replace(/"/g, '\\"');
         hero.style.setProperty('--hero-image', `url("${safePhotoUrl}")`);
+      };
+
+      if (safeImage.startsWith('data:') || safeImage.startsWith('blob:')) {
+        setHeroImage(safeImage);
+        return;
       }
+
+      const probe = new Image();
+      probe.onload = () => setHeroImage(safeImage);
+      probe.onerror = () => setHeroImage(DEFAULT_HERO_IMAGE);
+      probe.src = safeImage;
     }
 
     function applyProfilePhoto(photoUrl) {
-      if (!photoUrl) return;
+      const safeImage = normalizeImagePath(photoUrl, DEFAULT_ABOUT_IMAGE);
       document.querySelectorAll('.about-photo img').forEach((img) => {
         img.style.display = 'block';
-        img.src = photoUrl;
         const fallback = img.nextElementSibling;
         if (fallback) fallback.style.display = 'none';
+        img.dataset.fallbackApplied = '0';
+        img.onerror = function onProfileError() {
+          if (img.dataset.fallbackApplied === '1') {
+            img.style.display = 'none';
+            if (fallback) fallback.style.display = 'flex';
+            return;
+          }
+          img.dataset.fallbackApplied = '1';
+          img.src = DEFAULT_ABOUT_IMAGE;
+        };
+        img.src = safeImage;
       });
     }
 
@@ -1312,6 +1378,10 @@
       setSectionText('mediaTitle', sh.mediaTitle, true);
       setSectionText('mediaSub', sh.mediaSub);
 
+      setSectionText('coverageLabel', sh.coverageLabel);
+      setSectionText('coverageTitle', sh.coverageTitle, true);
+      setSectionText('coverageSub', sh.coverageSub);
+
       setSectionText('youtubeLabel', sh.youtubeLabel);
       setSectionText('youtubeTitle', sh.youtubeTitle, true);
       setSectionText('youtubeSub', sh.youtubeSub);
@@ -1353,8 +1423,8 @@
         if (el) el.textContent = decodeEntities(h.quote);
       }
 
-      const heroImage = h.backgroundImage || h.image || h.bgImage || '';
-      if (heroImage) applyHeroBackgroundImage(heroImage);
+      const heroImage = h.backgroundImage || h.image || h.bgImage || DEFAULT_HERO_IMAGE;
+      applyHeroBackgroundImage(heroImage);
 
       if (Array.isArray(h.stats) && h.stats.length) {
         const statEls = document.querySelectorAll('.stats-strip .stat-item');
@@ -1384,7 +1454,7 @@
             .join('');
         }
       }
-      if (a.photo) applyProfilePhoto(a.photo);
+      applyProfilePhoto(a.photo || DEFAULT_ABOUT_IMAGE);
     }
 
     function renderAchievements(items) {
@@ -1450,11 +1520,50 @@
       `).join('');
     }
 
+    function renderMediaCoverage(items) {
+      if (!Array.isArray(items) || !items.length) return;
+      const grid = document.getElementById('coverage-grid');
+      if (!grid) return;
+      grid.innerHTML = items.map((item) => {
+        const title = item.title || item.headline || item.source || item.publication || 'Coverage Resource';
+        const source = item.source || item.publication || '';
+        const dateText = item.date ? ` • ${item.date}` : '';
+        const cta = item.cta || 'Open Resource';
+        return `
+          <div class="coverage-card fade-up visible">
+            <div class="coverage-kicker">${escapeHtml(item.type || 'Media')}</div>
+            <h3 class="coverage-title">${escapeHtml(title)}</h3>
+            <div class="coverage-meta">${escapeHtml(source)}${escapeHtml(dateText)}</div>
+            <a href="${sanitizeHttpUrl(item.link, '#')}" target="_blank" class="media-link">${escapeHtml(cta)} →</a>
+          </div>
+        `;
+      }).join('');
+    }
+
     async function fetchRemoteCmsData() {
+      const candidates = ['./cms-data.json', '/cms-data.json'];
+      const stamp = Date.now();
+      for (const path of candidates) {
+        try {
+          const sep = path.includes('?') ? '&' : '?';
+          const response = await fetch(`${path}${sep}v=${stamp}`, {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+          });
+          if (!response.ok) continue;
+          const parsed = await response.json().catch(() => null);
+          if (parsed) return parsed;
+        } catch (_) {}
+      }
+      return null;
+    }
+
+    function readLocalCmsData() {
       try {
-        const response = await fetch('./cms-data.json', { cache: 'no-store' });
-        if (!response.ok) return null;
-        return await response.json();
+        if (typeof localStorage === 'undefined') return null;
+        const localData = localStorage.getItem('sd_cms_data');
+        if (!localData) return null;
+        return JSON.parse(localData);
       } catch (_) {
         return null;
       }
@@ -1482,9 +1591,7 @@
     (async function loadCMSData() {
       let calendlyUrl = DEFAULT_CALENDLY_URL;
       try {
-        let data = null;
-        const localData = localStorage.getItem('sd_cms_data');
-        if (localData) data = JSON.parse(localData);
+        let data = readLocalCmsData();
         if (!data) data = await fetchRemoteCmsData();
         if (!data) {
           mountCalendly(calendlyUrl);
@@ -1501,6 +1608,7 @@
         if (data.books) renderBooks(data.books);
         if (data.ebooks) renderEbooks(data.ebooks);
         if (data.media) renderMedia(data.media);
+        if (data.mediaCoverage) renderMediaCoverage(data.mediaCoverage);
         calendlyUrl = applySettings(data.settings);
       } catch (e) {
         console.log('CMS:', e);
