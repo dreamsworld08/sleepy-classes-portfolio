@@ -339,6 +339,7 @@
         <li><a data-panel="books" onclick="showPanel('books')"><span class="nav-icon">&#9997;</span> Books</a></li>
         <li><a data-panel="ebooks" onclick="showPanel('ebooks')"><span class="nav-icon">&#128218;</span> eBooks</a></li>
         <li><a data-panel="media" onclick="showPanel('media')"><span class="nav-icon">&#128240;</span> Media</a></li>
+        <li><a data-panel="headings" onclick="showPanel('headings')"><span class="nav-icon">&#9998;</span> Section Headings</a></li>
         <li><a data-panel="pages" onclick="showPanel('pages')"><span class="nav-icon">&#128196;</span> Pages</a></li>
         <li><a data-panel="settings" onclick="showPanel('settings')"><span class="nav-icon">&#9881;</span> Settings</a></li>
       </ul>
@@ -491,6 +492,17 @@
         </div>
       </div>
 
+      <!-- SECTION HEADINGS -->
+      <div class="panel" id="panel-headings">
+        <div class="page-header"><h2>Section Headings</h2></div>
+        <div class="card">
+          <div class="card-title">Homepage Heading Texts</div>
+          <p style="font-size:0.85rem;color:var(--grey-text);margin-bottom:14px;">For title fields you can use HTML (for example: <code>Books I &lt;span class="grad-text"&gt;Recommend&lt;/span&gt;&lt;br&gt;for UPSC Sociology</code>).</p>
+          <div id="sectionHeadingsEditor"></div>
+          <button class="btn btn-primary" style="margin-top:16px;" onclick="saveSectionHeadings()">Save Section Headings</button>
+        </div>
+      </div>
+
       <!-- PAGES -->
       <div class="panel" id="panel-pages">
         <div class="page-header">
@@ -618,6 +630,41 @@
           { title: 'GS Economy Quick Revision Guide', price: '₹499', desc: 'Concise revision notes for GS Economy with diagrams and flowcharts.', link: '#', coverUrl: '' }
         ],
         media: [],
+        sectionHeadings: {
+          aboutLabel: 'About',
+          aboutTitle: 'The Story<br>Behind the <span class="grad-text">Educator</span>',
+
+          achievementsLabel: 'Track Record',
+          achievementsTitle: 'Numbers That<br>Do the <span class="grad-text">Talking</span>',
+          achievementsSub: 'A decade and a half of results, trust, and relentless teaching — every number represents a life changed.',
+
+          booksLabel: 'Reading List',
+          booksTitle: 'Books I <span class="grad-text">Recommend</span><br>for UPSC Sociology',
+          booksSub: 'Handpicked reads that will form the backbone of your Sociology Optional preparation.',
+
+          ebooksLabel: 'Study Material',
+          ebooksTitle: 'eBooks &amp; <span class="grad-text">Notes</span>',
+          ebooksSub: 'Curated notes and study material developed from 16+ years of UPSC teaching experience.',
+
+          mediaLabel: 'Press',
+          mediaTitle: 'In the <span class="grad-text">News</span>',
+          mediaSub: 'Featured coverage, interviews, and mentions across publications.',
+
+          youtubeLabel: 'Free Lectures',
+          youtubeTitle: 'Watch Free <span class="grad-text">UPSC Lectures</span>',
+          youtubeSub: 'Free comprehensive lectures on Sociology Optional, GS Economy, and UPSC Strategy.',
+
+          twitterLabel: 'Feed',
+          twitterTitle: 'Thoughts &amp; <span class="grad-text">Motivation</span>',
+          twitterSub: 'Daily insights, UPSC tips, and motivation from Shekhar\'s Twitter/X feed.',
+
+          consultLabel: '1:1 Sessions',
+          consultTitle: 'Book a Personal <span class="grad-text">Guidance Session</span>',
+          consultSub: 'Get personalised UPSC strategy, Sociology optional guidance, and answer writing feedback directly from Shekhar Sir.',
+
+          collabLabel: 'Work Together',
+          collabTitle: 'Business <span class="grad-text">Collaboration</span>'
+        },
         pages: [],
         settings: {
           instagram: 'https://www.instagram.com/simplifiedsd/',
@@ -1072,6 +1119,59 @@
       toast('Media mention saved!');
     }
 
+    // ===== SECTION HEADINGS =====
+    function getSectionHeadingMeta() {
+      return [
+        { key: 'about', title: 'About', hasSub: false },
+        { key: 'achievements', title: 'Achievements', hasSub: true },
+        { key: 'books', title: 'Books', hasSub: true },
+        { key: 'ebooks', title: 'eBooks', hasSub: true },
+        { key: 'media', title: 'Media', hasSub: true },
+        { key: 'youtube', title: 'YouTube', hasSub: true },
+        { key: 'twitter', title: 'Twitter / X', hasSub: true },
+        { key: 'consult', title: 'Consultation', hasSub: true },
+        { key: 'collab', title: 'Collaboration', hasSub: false }
+      ];
+    }
+
+    function loadSectionHeadings() {
+      const defaults = getDefaults().sectionHeadings || {};
+      if (!DATA.sectionHeadings) DATA.sectionHeadings = {};
+      DATA.sectionHeadings = { ...defaults, ...DATA.sectionHeadings };
+
+      const wrap = document.getElementById('sectionHeadingsEditor');
+      const blocks = getSectionHeadingMeta().map((s) => `
+        <div style="border:1px solid var(--grey-border);border-radius:10px;padding:14px;margin-bottom:12px;">
+          <div style="font-weight:700;color:var(--navy);margin-bottom:10px;">${s.title}</div>
+          <div class="form-group">
+            <label>Label</label>
+            <input type="text" id="sh_${s.key}_label" value="${(DATA.sectionHeadings[`${s.key}Label`] || '').replace(/"/g, '&quot;')}">
+          </div>
+          <div class="form-group">
+            <label>Title (HTML allowed)</label>
+            <textarea id="sh_${s.key}_title" rows="2">${DATA.sectionHeadings[`${s.key}Title`] || ''}</textarea>
+          </div>
+          ${s.hasSub ? `
+          <div class="form-group">
+            <label>Subtitle</label>
+            <textarea id="sh_${s.key}_sub" rows="2">${DATA.sectionHeadings[`${s.key}Sub`] || ''}</textarea>
+          </div>` : ''}
+        </div>
+      `);
+      wrap.innerHTML = blocks.join('');
+    }
+
+    function saveSectionHeadings() {
+      if (!DATA.sectionHeadings) DATA.sectionHeadings = {};
+      getSectionHeadingMeta().forEach((s) => {
+        DATA.sectionHeadings[`${s.key}Label`] = document.getElementById(`sh_${s.key}_label`).value;
+        DATA.sectionHeadings[`${s.key}Title`] = document.getElementById(`sh_${s.key}_title`).value;
+        if (s.hasSub) DATA.sectionHeadings[`${s.key}Sub`] = document.getElementById(`sh_${s.key}_sub`).value;
+      });
+      saveData(DATA);
+      toast('Section headings saved!');
+    }
+
     // ===== PAGES =====
     function renderPages() {
       const tb = document.getElementById('pagesTable');
@@ -1461,6 +1561,7 @@
       renderBooks();
       renderEbooks();
       renderMedia();
+      loadSectionHeadings();
       renderPages();
       loadSettings();
       fillGithubConfigForm(getGithubConfig());
