@@ -228,7 +228,7 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(90deg, rgba(1,4,10,0.78) 0%, rgba(2,7,14,0.62) 38%, rgba(2,8,14,0.45) 62%, rgba(4,10,16,0.66) 100%),
+        linear-gradient(90deg, rgba(1,4,10,0.34) 0%, rgba(2,7,14,0.48) 40%, rgba(2,8,14,0.76) 72%, rgba(4,10,16,0.86) 100%),
         var(--hero-image);
       background-size: cover;
       background-position: center center;
@@ -246,17 +246,23 @@
       z-index: 1;
       display: flex;
       align-items: flex-end;
+      justify-content: flex-end;
       min-height: calc(100vh - 78px);
       width: 100%;
       max-width: 1240px;
       padding-top: 96px;
       padding-bottom: 92px;
     }
-    .hero-content { max-width: 700px; }
+    .hero-content {
+      max-width: 700px;
+      margin-left: auto;
+      text-align: right;
+    }
 
     .hero-status {
       display: inline-flex;
       align-items: center;
+      justify-content: flex-end;
       gap: 8px;
       font-size: 0.78rem;
       font-weight: 600;
@@ -313,6 +319,7 @@
       color: #fff;
     }
     .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-buttons { justify-content: flex-end; }
     .hero .btn-grad {
       background: #06B6D4;
       color: #082F49;
@@ -722,9 +729,12 @@
       .navbar .container { height: 70px; }
       .hero { padding-top: 70px; min-height: 86vh; }
       .hero .container { min-height: calc(86vh - 70px); padding-top: 50px; padding-bottom: 56px; }
+      .hero-content { text-align: left; margin-left: 0; max-width: 640px; }
+      .hero-status { justify-content: flex-start; }
       .hero-name { font-size: clamp(2.6rem, 14vw, 4.2rem); line-height: 0.95; }
       .hero-role { font-size: 0.95rem; }
       .hero-bio { font-size: 0.98rem; line-height: 1.42; }
+      .hero-buttons { justify-content: flex-start; }
       .nav-links { display: none; }
       .nav-links.open {
         display: flex; flex-direction: column;
